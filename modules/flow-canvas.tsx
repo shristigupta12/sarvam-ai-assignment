@@ -1,15 +1,16 @@
 'use client'; 
 
-import React, { useCallback, useRef } from 'react';
-import ReactFlow, { ReactFlowProvider, Background, Controls, useReactFlow, Node as FlowNode, Edge, OnSelectionChangeFunc, DefaultEdgeOptions } from 'reactflow';
+import React, { useCallback, useEffect, useRef } from 'react';
+import ReactFlow, { ReactFlowProvider, Background, Controls, useReactFlow, Node as FlowNode, Edge, DefaultEdgeOptions } from 'reactflow';
 import 'reactflow/dist/style.css'; 
-import useFlowStore, { CustomEdgeData } from '@/modules/store/flowStore';
+import useFlowStore, { CustomEdgeData } from '@/modules/store/flow-store';
 import { CallTransferNode, ConversationNode, EndCallNode, FunctionNode, PressDigitNode } from './canvas/nodes';
 import NodeSidebar from './node-sidebar/node-sidebar';
-import { generateUniqueNodeId } from '@/modules/utility/helper';
 import CustomEdge from './canvas/edges/custom-edge';
 import NodeSettingsPanel from './node-settings-panel/NodeSettingsPanel';
 import { SidebarProvider } from './providers/sidebar-provider';
+import { useCreateNode } from './hooks/useCreateNode';
+import { NodeType } from './interfaces/main';
 
 
 const nodeTypes = {
@@ -32,7 +33,12 @@ const defaultEdgeOptions: DefaultEdgeOptions = {
 const FlowCanvas = () => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const { screenToFlowPosition } = useReactFlow();
-  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onEdgesDelete, addNode, onSelectionChange} = useFlowStore();
+  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onEdgesDelete, addNode, onSelectionChange, selectedElements} = useFlowStore();
+  const { createNode } = useCreateNode();
+
+  useEffect(()=>{
+     console.log("selectedElements: ", selectedElements)
+  }, [selectedElements])
 
   const onDragOver = useCallback((event: React.DragEvent)=>{
     event?.preventDefault();
@@ -45,7 +51,7 @@ const FlowCanvas = () => {
 
         if(reactFlowWrapper.current){
             const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-            const type = event.dataTransfer.getData('application/reactflow') as string;
+            const type = event.dataTransfer.getData('application/reactflow') as NodeType;
 
             if(typeof type === 'undefined' || !type){
                 return;
@@ -56,36 +62,7 @@ const FlowCanvas = () => {
                 y: event.clientY - reactFlowBounds.top,
             })
 
-            let initialData: any = {};
-
-            switch (type) {
-                case 'conversationNode':
-                  initialData = { prompt: 'New conversation prompt' };
-                  break;
-                case 'functionNode':
-                  initialData = { functionName: 'newFunction' };
-                  break;
-                case 'callTransferNode':
-                  initialData = { phoneNumber: '+1XXXXXXXXXX' };
-                  break;
-                case 'pressDigitNode':
-                  initialData = { instructions: 'Press...', pauseDetectionDelay: 1000 };
-                  break;
-                case 'endCallNode':
-                  initialData = {};
-                  break;
-                default:
-                  break;
-              }
-
-              const newNode: FlowNode = {
-                id: generateUniqueNodeId(),
-                type,
-                position,
-                data: initialData,
-              };
-
-              addNode(newNode);
+            createNode(type, position);
         }
     }, [screenToFlowPosition, addNode]
   )
@@ -95,7 +72,7 @@ const FlowCanvas = () => {
     <div className="flex h-screen">
       <NodeSidebar />
 
-      <div className="flex-grow h-full bg-primary-50" ref={reactFlowWrapper}>
+      <div className="flex-grow h-full bg-neutral-50" ref={reactFlowWrapper}>
         <ReactFlow
           nodes={nodes}
           edges={edges as Edge<CustomEdgeData>[]} 

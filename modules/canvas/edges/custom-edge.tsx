@@ -6,8 +6,8 @@ import {
     EdgeProps,
     Edge as ReactFlowEdge
 } from 'reactflow';
-import useFlowStore from '@/modules/store/flowStore';
-import { CustomEdgeData } from '@/modules/store/flowStore';
+import useFlowStore from '@/modules/store/flow-store';
+import { CustomEdgeData } from '@/modules/store/flow-store';
 
 const CustomEdge: React.FC<EdgeProps<CustomEdgeData>> = ({
     id,

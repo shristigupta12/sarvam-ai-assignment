@@ -1,5 +1,4 @@
 import { NodeType } from "../interfaces/main";
-import { JSX } from "react";
 import { Binary, Cog, Headset, Square, Hash } from "lucide-react";
 
 export const NodeBackgroundColors: Record<NodeType, string> = {

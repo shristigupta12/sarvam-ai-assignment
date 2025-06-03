@@ -1,5 +1,4 @@
 import { NodeType } from "@/modules/interfaces/main";
-import { CustomNodeData } from "../interfaces/main";
 
 export const handleNodeClick = (
   nodeType: NodeType,
@@ -8,7 +7,7 @@ export const handleNodeClick = (
   onAddNode(nodeType, { x: 50, y: 50 });
 };
 
-export const onDragStart = (event: React.DragEvent, nodeType: string) => {
+export const onDragStart = (event: React.DragEvent, nodeType: NodeType) => {
   event.dataTransfer.setData("application/reactflow", nodeType);
   event.dataTransfer.effectAllowed = "move";
 }; 
