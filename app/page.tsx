@@ -1,4 +1,4 @@
-import FlowCanvasWrapper from "./components/flow/FlowCanvas";
+import FlowCanvasWrapper from "../modules/flow-canvas";
 
 export default function Home() {
   return (

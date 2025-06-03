@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { generateUniqueEdgeId } from '../utility/helper';
 import {
   Connection,
   Edge,
@@ -14,6 +15,7 @@ import {
   OnEdgesDelete,
   OnSelectionChangeFunc,
 } from 'reactflow';
+
 
 export interface CustomEdgeData {
   condition?: string;
@@ -77,9 +79,10 @@ const useFlowStore = create<FlowState>((set, get) => ({
       };
     });
   },
+
   onConnect: (connection: Connection) => {
     const newEdge: Edge<CustomEdgeData> = {
-      id: `edge_${Date.now()}`,
+      id: generateUniqueEdgeId(),
       source: connection.source!,
       target: connection.target!,
       sourceHandle: connection.sourceHandle,
@@ -91,6 +94,7 @@ const useFlowStore = create<FlowState>((set, get) => ({
       edges: addEdge(newEdge, get().edges),
     });
   },
+
   onEdgesDelete: (edgesToDelete: Edge[]) => {
     set((state) => {
       const remainingEdges = state.edges.filter(
@@ -109,14 +113,17 @@ const useFlowStore = create<FlowState>((set, get) => ({
       };
     });
   },
+
   onSelectionChange: ({ nodes: newlySelectedNodes, edges: newlySelectedEdges }) => {
     set({ selectedElements: { nodes: newlySelectedNodes, edges: newlySelectedEdges as Edge<CustomEdgeData>[] } });
   },
+
   addNode: (node: Node) => {
     set((state) => ({
       nodes: [...state.nodes, node],
     }));
   },
+
   deleteNode: (nodeId: string) => {
     set((state) => {
       const remainingNodes = state.nodes.filter((node) => node.id !== nodeId);
@@ -135,6 +142,7 @@ const useFlowStore = create<FlowState>((set, get) => ({
       };
     });
   },
+
   updateNodeData: (nodeId: string, newData: Partial<Node['data']>) => {
     set((state) => {
       const newNodes = state.nodes.map((node) =>
@@ -179,6 +187,7 @@ const useFlowStore = create<FlowState>((set, get) => ({
       };
     });
   },
+  
 }));
 
 export default useFlowStore;

@@ -3,12 +3,13 @@
 import React, { useCallback, useRef } from 'react';
 import ReactFlow, { ReactFlowProvider, Background, Controls, useReactFlow, Node as FlowNode, Edge, OnSelectionChangeFunc, DefaultEdgeOptions } from 'reactflow';
 import 'reactflow/dist/style.css'; 
-import useFlowStore, { CustomEdgeData } from '@/app/store/flowStore';
-import { CallTransferNode, ConversationNode, EndCallNode, FunctionNode, PressDigitNode } from './nodes';
-import NodeSidebar from './NodeSidebar';
-import { generateUniqueId } from '@/app/utility/helper';
-import CustomEdge from './CustomEdge';
-import NodeSettingsPanel from './NodeSettingsPanel';
+import useFlowStore, { CustomEdgeData } from '@/modules/store/flowStore';
+import { CallTransferNode, ConversationNode, EndCallNode, FunctionNode, PressDigitNode } from './canvas/nodes';
+import NodeSidebar from './node-sidebar/node-sidebar';
+import { generateUniqueNodeId } from '@/modules/utility/helper';
+import CustomEdge from './canvas/edges/custom-edge';
+import NodeSettingsPanel from './node-settings-panel/NodeSettingsPanel';
+import { SidebarProvider } from './providers/sidebar-provider';
 
 
 const nodeTypes = {
@@ -31,7 +32,7 @@ const defaultEdgeOptions: DefaultEdgeOptions = {
 const FlowCanvas = () => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const { screenToFlowPosition } = useReactFlow();
-  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onEdgesDelete,  addNode, onSelectionChange} = useFlowStore();
+  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onEdgesDelete, addNode, onSelectionChange} = useFlowStore();
 
   const onDragOver = useCallback((event: React.DragEvent)=>{
     event?.preventDefault();
@@ -78,7 +79,7 @@ const FlowCanvas = () => {
               }
 
               const newNode: FlowNode = {
-                id: generateUniqueId(),
+                id: generateUniqueNodeId(),
                 type,
                 position,
                 data: initialData,
@@ -92,25 +93,7 @@ const FlowCanvas = () => {
 
   return (
     <div className="flex h-screen">
-      <NodeSidebar onAddNode={(type, pos) => {
-        const newNode: FlowNode = {
-            id: generateUniqueId(),
-            type,
-            position: { x: 50, y: 50 },
-            data: {},
-        };
-        let initialData: any = {};
-        switch (type) {
-            case 'conversationNode': initialData = { prompt: 'New conversation' }; break;
-            case 'functionNode': initialData = { functionName: 'newFunction' }; break;
-            case 'callTransferNode': initialData = { phoneNumber: '+1XXXXXXXXXX' }; break;
-            case 'pressDigitNode': initialData = { instructions: 'Press...', pauseDetectionDelay: 1000 }; break;
-            case 'endCallNode': initialData = {}; break;
-            default: break;
-        }
-        newNode.data = initialData;
-        addNode(newNode);
-      }} />
+      <NodeSidebar />
 
       <div className="flex-grow h-full bg-primary-50" ref={reactFlowWrapper}>
         <ReactFlow
@@ -138,9 +121,11 @@ const FlowCanvas = () => {
 };
 
 const FlowCanvasWrapper = () => (
-  <ReactFlowProvider>
-    <FlowCanvas />
-  </ReactFlowProvider>
+  <SidebarProvider>
+    <ReactFlowProvider>
+      <FlowCanvas />
+    </ReactFlowProvider>
+  </SidebarProvider>
 );
 
 export default FlowCanvasWrapper;

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import useFlowStore from '@/app/store/flowStore';
+import useFlowStore from '@/modules/store/flowStore';
 import { Edge, Node } from 'reactflow';
-import { CustomEdgeData } from '@/app/store/flowStore';
+import { CustomEdgeData } from '@/modules/store/flowStore';
 
 const NodeSettingsPanel: React.FC = () => {
     const { selectedElements, updateNodeData, updateEdgeData } = useFlowStore();
