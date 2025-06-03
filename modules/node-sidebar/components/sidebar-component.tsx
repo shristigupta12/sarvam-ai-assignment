@@ -6,7 +6,7 @@ export const SidebarComponent = ({nodeType, children, name}: {nodeType: NodeType
     const {createNode} = useCreateNode()
     return(
       <div
-          className="flex gap-1 items-center cursor-grab active:cursor-grabbing hover:bg-neutral-100 rounded-md p-2"
+          className="flex gap-1 text-sm items-center cursor-grab active:cursor-grabbing hover:bg-neutral-100 rounded-md p-2"
           onDragStart={(event) => onDragStart(event, nodeType)}
           draggable
           onClick={() =>

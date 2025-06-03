@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { generateUniqueEdgeId } from '../utility/helper';
+import { generateUniqueEdgeId, generateUniqueNodeId } from '../utility/helper';
 import {
   Connection,
   Edge,
@@ -37,6 +37,7 @@ interface FlowState {
   onSelectionChange: OnSelectionChangeFunc;
   addNode: (node: Node) => void;
   deleteNode: (nodeId: string) => void;
+  duplicateNode: (nodeId: string) => void;
   updateNodeData: (nodeId: string, data: Partial<Node['data']>) => void;
   updateEdgeData: (edgeId: string, data: Partial<CustomEdgeData>) => void;
 }
@@ -138,6 +139,37 @@ const useFlowStore = create<FlowState>((set, get) => ({
         selectedElements: {
           nodes: newSelectedNodes,
           edges: newSelectedEdges,
+        },
+      };
+    });
+  },
+
+  duplicateNode: (nodeId: string) => {
+    set((state) => {
+      const nodeToDuplicate = state.nodes.find((node) => node.id === nodeId);
+      if (!nodeToDuplicate) return state;
+
+      const duplicatedNode: Node = {
+        ...nodeToDuplicate,
+        id: generateUniqueNodeId(),
+        position: {
+          x: nodeToDuplicate.position.x + 20,
+          y: nodeToDuplicate.position.y + 20,
+        },
+        selected: true,
+      };
+
+      // Update all nodes: deselect the original node and add the duplicated node
+      const updatedNodes = state.nodes.map((node) =>
+        node.id === nodeId ? { ...node, selected: false } : node
+      );
+
+      return {
+        ...state,
+        nodes: [...updatedNodes, duplicatedNode],
+        selectedElements: {
+          nodes: [duplicatedNode], // Only the duplicated node is selected
+          edges: [], // Clear edge selection
         },
       };
     });

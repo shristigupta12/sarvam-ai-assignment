@@ -1,12 +1,24 @@
 import React, { memo } from 'react';
-import { Handle, Position } from 'reactflow';
+import { Handle, Position, NodeProps } from 'reactflow';
 import { NodesWrapper } from './nodes-wrapper/nodes-wrapper';
+import useFlowStore from '@/modules/store/flow-store';
 
-const EndCallNode = ({ id }: { id: string }) => {
+interface EndCallNodeData {
+  title: string;
+}
+
+interface EndCallNodeProps extends NodeProps<EndCallNodeData> {}
+
+const EndCallNode = ({ id, data }: EndCallNodeProps) => {
+
+  const updateNodeData = useFlowStore((state) => state.updateNodeData);
+
+  const handleTitleChange = (title: string) => {
+    updateNodeData(id, { title });
+  }
+
   return (
-    <NodesWrapper nodeId={id} nodeType="endCallNode" title="End Call Node" handleTitleChange={() => {}}>
-      <div className="text-sm font-semibold">End Call Node</div>
-
+    <NodesWrapper nodeId={id} nodeType="endCallNode" title={data?.title || 'End Call'} handleTitleChange={handleTitleChange}>
       <Handle type="target" position={Position.Top} />
     </NodesWrapper>
   );

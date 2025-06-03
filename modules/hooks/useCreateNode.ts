@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Node as FlowNode } from 'reactflow';
-import useFlowStore from '@/modules/store/flowStore';
+import useFlowStore from '@/modules/store/flow-store';
 import { generateUniqueNodeId } from '@/modules/utility/helper';
 import { NodeType } from '../interfaces/main';
 
@@ -20,19 +20,19 @@ export const useCreateNode = () => {
     
     switch (type) {
       case 'conversationNode':
-        initialData = { prompt: 'New conversation' };
+        initialData = { prompt: 'New conversation', title: "Conversation" };
         break;
       case 'functionNode':
-        initialData = { functionName: 'newFunction' };
+        initialData = { functionName: 'newFunction', title: "Function" };
         break;
       case 'callTransferNode':
-        initialData = { phoneNumber: '+1XXXXXXXXXX' };
+        initialData = { phoneNumber: '+1XXXXXXXXXX', title: "Call Transfer" };
         break;
       case 'pressDigitNode':
-        initialData = { instructions: 'Press...', pauseDetectionDelay: 1000 };
+        initialData = { instructions: 'Press...', pauseDetectionDelay: 1000, title: "Press Digit" };
         break;
       case 'endCallNode':
-        initialData = {};
+        initialData = { title: "End Call" };
         break;
       default:
         break;
