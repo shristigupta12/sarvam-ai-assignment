@@ -12,23 +12,11 @@ interface FunctionNodeProps {
 }
 
 const FunctionNode = ({ id, data }: FunctionNodeProps) => {
-  const updateNodeData = useFlowStore((state) => state.updateNodeData);
-
-  const handleFunctionNameChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    updateNodeData(id, { functionName: evt.target.value });
-  }
-
+  
   return (
     <div className="bg-green-200 border border-green-500 rounded-md p-4 shadow-md min-w-[200px]">
       <div className="text-sm font-semibold mb-2">Function Node</div>
-      <label className="block text-xs font-medium text-gray-700 mb-1">Function:</label>
-      <input
-        type="text"
-        value={data.functionName}
-        onChange={handleFunctionNameChange}
-        className="nodrag w-full p-1 border rounded text-xs"
-        placeholder="e.g., processPayment"
-      />
+      <div className="text-xs text-gray-700">Function: {data.functionName || 'No function name'}</div>
 
       <Handle type="target" position={Position.Top} className="!bg-green-500" />
       <Handle type="source" position={Position.Bottom} className="!bg-green-500" />

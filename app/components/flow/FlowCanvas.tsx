@@ -1,12 +1,15 @@
 'use client'; 
 
 import React, { useCallback, useRef } from 'react';
-import ReactFlow, { ReactFlowProvider, Background, Controls, useReactFlow, Node as FlowNode, Edge } from 'reactflow';
+import ReactFlow, { ReactFlowProvider, Background, Controls, useReactFlow, Node as FlowNode, Edge, OnSelectionChangeFunc, DefaultEdgeOptions } from 'reactflow';
 import 'reactflow/dist/style.css'; 
-import useFlowStore from '@/app/store/flowStore';
+import useFlowStore, { CustomEdgeData } from '@/app/store/flowStore';
 import { CallTransferNode, ConversationNode, EndCallNode, FunctionNode, PressDigitNode } from './nodes';
 import NodeSidebar from './NodeSidebar';
 import { generateUniqueId } from '@/app/utility/helper';
+import CustomEdge from './CustomEdge';
+import NodeSettingsPanel from './NodeSettingsPanel';
+
 
 const nodeTypes = {
     conversationNode: ConversationNode,
@@ -16,11 +19,19 @@ const nodeTypes = {
     endCallNode: EndCallNode,
 };
 
+const edgeTypes = {
+    customEdge: CustomEdge
+};
+
+const defaultEdgeOptions: DefaultEdgeOptions = {
+    type: 'customEdge'
+}
+
 
 const FlowCanvas = () => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const { screenToFlowPosition } = useReactFlow();
-  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onEdgesDelete,  addNode} = useFlowStore();
+  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onEdgesDelete,  addNode, onSelectionChange} = useFlowStore();
 
   const onDragOver = useCallback((event: React.DragEvent)=>{
     event?.preventDefault();
@@ -80,15 +91,14 @@ const FlowCanvas = () => {
 
 
   return (
-    <div className="flex h-screen"> 
+    <div className="flex h-screen">
       <NodeSidebar onAddNode={(type, pos) => {
         const newNode: FlowNode = {
             id: generateUniqueId(),
             type,
-            position: { x: 50, y: 50 }, 
-            data: {}, 
+            position: { x: 50, y: 50 },
+            data: {},
         };
-        
         let initialData: any = {};
         switch (type) {
             case 'conversationNode': initialData = { prompt: 'New conversation' }; break;
@@ -102,23 +112,27 @@ const FlowCanvas = () => {
         addNode(newNode);
       }} />
 
-      <div className="flex-grow h-full" ref={reactFlowWrapper}> {/* Flow canvas takes remaining space */}
+      <div className="flex-grow h-full" ref={reactFlowWrapper}>
         <ReactFlow
           nodes={nodes}
-          edges={edges}
+          edges={edges as Edge<CustomEdgeData>[]} 
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           onEdgesDelete={onEdgesDelete}
+          onSelectionChange={onSelectionChange} 
           nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}  
+          defaultEdgeOptions={defaultEdgeOptions} 
           fitView
-          onDrop={onDrop}           
+          onDrop={onDrop}
           onDragOver={onDragOver}
         >
           <Background />
           <Controls />
         </ReactFlow>
       </div>
+      <NodeSettingsPanel />
     </div>
   );
 };
