@@ -24,7 +24,39 @@ interface FlowState {
 }
 
 const useFlowStore = create<FlowState>((set, get) => ({
-    nodes: [],
+    nodes: [
+        {
+          id: '1',
+          type: 'conversationNode', 
+          position: { x: 100, y: 50 },
+          data: { prompt: 'Hello, how can I help you today?' },
+        },
+        {
+          id: '2',
+          type: 'functionNode',
+          position: { x: 400, y: 150 },
+          data: { functionName: 'ProcessOrder' },
+        },
+        {
+          id: '3',
+          type: 'callTransferNode',
+          position: { x: 100, y: 250 },
+          data: { phoneNumber: '1-800-CALL-NOW' },
+        },
+        {
+          id: '4',
+          type: 'pressDigitNode',
+          position: { x: 400, y: 350 },
+          data: { instructions: 'Press 1 for Sales, 2 for Support', pauseDetectionDelay: 2000 },
+        },
+        {
+          id: '5',
+          type: 'endCallNode',
+          position: { x: 250, y: 500 },
+          data: {},
+        },
+      ],
+      
     edges: [],
   
     onNodesChange: (changes: NodeChange[]) => {
