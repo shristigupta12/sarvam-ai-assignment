@@ -28,7 +28,6 @@ interface FlowState {
   nodes: Node[];
   edges: Edge<CustomEdgeData>[]; 
   selectedElements: SelectedElements;
-
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
@@ -61,6 +60,7 @@ const useFlowStore = create<FlowState>((set, get) => ({
       };
     });
   },
+  
   onEdgesChange: (changes: EdgeChange[]) => {
     set((state) => {
       const newEdges = applyEdgeChanges(changes, state.edges);
@@ -109,11 +109,9 @@ const useFlowStore = create<FlowState>((set, get) => ({
       };
     });
   },
-
   onSelectionChange: ({ nodes: newlySelectedNodes, edges: newlySelectedEdges }) => {
     set({ selectedElements: { nodes: newlySelectedNodes, edges: newlySelectedEdges as Edge<CustomEdgeData>[] } });
   },
-
   addNode: (node: Node) => {
     set((state) => ({
       nodes: [...state.nodes, node],
@@ -138,7 +136,6 @@ const useFlowStore = create<FlowState>((set, get) => ({
     });
   },
   updateNodeData: (nodeId: string, newData: Partial<Node['data']>) => {
-    console.log("newData (from updateNodeData): ", newData); 
     set((state) => {
       const newNodes = state.nodes.map((node) =>
         node.id === nodeId

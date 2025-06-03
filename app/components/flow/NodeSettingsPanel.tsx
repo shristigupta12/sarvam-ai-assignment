@@ -95,12 +95,9 @@ const NodeSettingsPanel: React.FC = () => {
     );
   };
 
-  useEffect(()=>{
-    console.log("selectedNode: ",selectedNode);
-  }, [selectedNode])
     
     return(
-        <aside className="border-l border-gray-300 p-4 bg-gray-50 h-full w-80 overflow-y-auto">
+        <aside className="border-l border-gray-300 p-4 bg-white h-full w-80 overflow-y-auto">
         <div className="text-lg font-bold mb-4">Properties</div>
   
         {!selectedNode && !selectedEdge && (

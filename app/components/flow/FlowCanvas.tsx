@@ -112,7 +112,7 @@ const FlowCanvas = () => {
         addNode(newNode);
       }} />
 
-      <div className="flex-grow h-full" ref={reactFlowWrapper}>
+      <div className="flex-grow h-full bg-primary-50" ref={reactFlowWrapper}>
         <ReactFlow
           nodes={nodes}
           edges={edges as Edge<CustomEdgeData>[]} 
