@@ -11,6 +11,7 @@ import {
   OnConnect,
   applyNodeChanges,
   applyEdgeChanges,
+  OnEdgesDelete
 } from 'reactflow';
 
 interface FlowState {
@@ -19,44 +20,15 @@ interface FlowState {
     onNodesChange: OnNodesChange;
     onEdgesChange: OnEdgesChange;
     onConnect: OnConnect;
+    onEdgesDelete: OnEdgesDelete;
     addNode: (node: Node) => void;
     deleteNode: (nodeId: string) => void;
+    updateNodeData: (nodeId: string, data: Partial<Node['data']>) => void;
 }
 
 const useFlowStore = create<FlowState>((set, get) => ({
-    nodes: [
-        {
-          id: '1',
-          type: 'conversationNode', 
-          position: { x: 100, y: 50 },
-          data: { prompt: 'Hello, how can I help you today?' },
-        },
-        {
-          id: '2',
-          type: 'functionNode',
-          position: { x: 400, y: 150 },
-          data: { functionName: 'ProcessOrder' },
-        },
-        {
-          id: '3',
-          type: 'callTransferNode',
-          position: { x: 100, y: 250 },
-          data: { phoneNumber: '1-800-CALL-NOW' },
-        },
-        {
-          id: '4',
-          type: 'pressDigitNode',
-          position: { x: 400, y: 350 },
-          data: { instructions: 'Press 1 for Sales, 2 for Support', pauseDetectionDelay: 2000 },
-        },
-        {
-          id: '5',
-          type: 'endCallNode',
-          position: { x: 250, y: 500 },
-          data: {},
-        },
-      ],
-      
+    nodes: [],
+
     edges: [],
   
     onNodesChange: (changes: NodeChange[]) => {
@@ -74,6 +46,13 @@ const useFlowStore = create<FlowState>((set, get) => ({
         edges: addEdge(connection, get().edges),
       });
     },
+    onEdgesDelete: (edgesToDelete: Edge[]) => {
+        set((state)=> ({
+            edges: state.edges.filter(
+                (edge) => !edgesToDelete.some((deletedEdge) => deletedEdge.id === edge.id)
+              ),
+        }))
+    },
     addNode: (node: Node) => {
       set((state) => ({
         nodes: [...state.nodes, node],
@@ -83,8 +62,17 @@ const useFlowStore = create<FlowState>((set, get) => ({
       set((state) => ({
         nodes: state.nodes.filter((node) => node.id !== nodeId),
         edges: state.edges.filter((edge) => edge.source !== nodeId && edge.target !== nodeId),
-      }));
+    }));
     },
+    updateNodeData: (nodeId: string, newData: Partial<Node['data']>) => {
+        set((state) => ({
+            nodes: state.nodes.map((node) =>
+                node.id === nodeId
+                    ? { ...node, data: { ...node.data, ...newData } }
+                    : node
+                ),
+        }))
+    }
 }));
 
 export default useFlowStore;
