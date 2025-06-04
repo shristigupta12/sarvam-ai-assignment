@@ -4,8 +4,6 @@ import { NodeType } from "@/modules/interfaces/main";
 import { PencilLine } from "lucide-react";
 import { useState } from "react";
 import { EditNodeDropdown } from "./edit-node-dropdown";
-import { Handle } from "reactflow";
-import { Position } from "reactflow";
 
 export const NodesWrapper = ({ nodeId, nodeType, title, handleTitleChange, children, className}:{ nodeId: string, nodeType: NodeType, title: string, handleTitleChange: (title: string) => void, children: React.ReactNode, className?: string}) => {
     const [isEditing, setIsEditing] = useState(false);
@@ -50,7 +48,6 @@ export const NodesWrapper = ({ nodeId, nodeType, title, handleTitleChange, child
                     {children}
                 </div>
             }
-            <Handle type="target" position={Position.Top} />
         </div>
     )
 }

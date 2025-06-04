@@ -17,21 +17,21 @@ const FunctionNode = ({ id, data }: FunctionNodeProps) => {
   }
   
   return (
-    <NodesWrapper nodeId={id} nodeType="functionNode" title={data?.title || 'Function'} handleTitleChange={handleTitleChange}>
-      <div className="mb-2">
-        <label className="text-xs text-gray-700 block mb-1">Function Name:</label>
-        <Input 
-          onChange={(e) => updateNodeData(id, { functionName: e.target.value })} 
-          value={data?.functionName || ""} 
-          placeholder="Enter function name"
-          className="text-xs"
-        />
-      </div>
-      <TransitionConditions id={id} data={data} />
-
-      <Handle type="target" position={Position.Top}  />
-      <Handle type="source" position={Position.Bottom} />
-    </NodesWrapper>
+    <div className="relative">
+      <Handle type="target" position={Position.Top} />
+      <NodesWrapper nodeId={id} nodeType="functionNode" title={data?.title || 'Function'} handleTitleChange={handleTitleChange}>
+        <div className="mb-2">
+          <label className="text-xs text-gray-700 block mb-1">Function Name:</label>
+          <Input 
+            onChange={(e) => updateNodeData(id, { functionName: e.target.value })} 
+            value={data?.functionName || ""} 
+            placeholder="Enter function name"
+            className="text-xs"
+          />
+        </div>
+        <TransitionConditions id={id} data={data} />
+      </NodesWrapper>
+    </div>
   );
 };
 

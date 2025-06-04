@@ -32,7 +32,7 @@ export const AddTransitionsDropdown = ({id, data}:{id: string, data: CustomNodeD
                 <Plus className="size-4"/>
             </button>
             {openDropdown && (
-                <div className="bg-white flex flex-col absolute p-1 -right-20 rounded-md shadow-sm min-w-[100px] border">
+                <div className="bg-white flex flex-col absolute p-1 -right-30 rounded-md shadow-sm min-w-[100px] border">
                     <AddPromptTransition id={id} data={data} />
                     <AddEquationTransition id={id} data={data} setDropdownShouldClose={setShouldHandleClickOutside} />
                 </div>

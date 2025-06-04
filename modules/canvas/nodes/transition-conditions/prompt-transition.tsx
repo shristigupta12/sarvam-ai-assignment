@@ -23,7 +23,7 @@ export const PromptTransition = ({id, index, transition, data}:{id: string, inde
     }
 
     return (
-        <div key={index} className="flex items-center justify-between p-2 gap-1 bg-neutral-50 rounded-md w-full" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+        <div key={index} className="flex items-center justify-between p-2 gap-1 bg-neutral-50 rounded-md w-full relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
             <div className="flex items-center gap-2 flex-1 min-w-0"> <SunMedium className="size-3"/> 
             {isEditing ? (
                 <input 
@@ -42,7 +42,12 @@ export const PromptTransition = ({id, index, transition, data}:{id: string, inde
                 <PencilLine className="size-3 hover:cursor-pointer hover:text-neutral-800" onClick={handleToggleEdit} />
                 <DeleteTransition id={id} data={data} index={index} />
             </div>
-            <Handle type="target" position={Position.Right}  />
+            <Handle 
+                type="source" 
+                position={Position.Right} 
+                id={`prompt-${index}`}
+                style={{ right: -8, top: '50%', transform: 'translateY(-50%)' }}
+            />
         </div>
     )
 }

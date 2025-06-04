@@ -34,7 +34,7 @@ const NodeSidebar: React.FC = () => {
 
       <Separator />
 
-      <div className={`flex flex-col gap-2 w-full text-neutral-600 ${isOpen ? "px-4 items-start" : "px-2 items-center "}`}>
+      <div className={`flex flex-col gap-2 w-full text-neutral-800 ${isOpen ? "px-4 items-start" : "px-2 items-center  "}`}>
         {SidebarComponentData.map((item) => (
           <SidebarComponent key={item.nodeType} {...item} />
         ))}

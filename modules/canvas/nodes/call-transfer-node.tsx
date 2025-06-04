@@ -17,20 +17,21 @@ const CallTransferNode = ({ id, data }: CallTransferNodeProps) => {
   }
 
   return (
-    <NodesWrapper nodeId={id} nodeType="callTransferNode" title={data?.title || 'Call Transfer'} handleTitleChange={handleTitleChange}>
-      <div className="mb-2">
-        <label className="text-xs text-gray-700 block mb-1">Phone Number:</label>
-        <Input 
-          onChange={(e) => updateNodeData(id, { phoneNumber: e.target.value })} 
-          value={data?.phoneNumber || ""} 
-          placeholder="Enter phone number"
-          className="text-xs"
-        />
-      </div>
-      <TransitionConditions id={id} data={data} />
-      <Handle type="target" position={Position.Top}  />
-      <Handle type="source" position={Position.Bottom}  />
-    </NodesWrapper>
+    <div className="relative">
+      <Handle type="target" position={Position.Top} />
+      <NodesWrapper nodeId={id} nodeType="callTransferNode" title={data?.title || 'Call Transfer'} handleTitleChange={handleTitleChange}>
+        <div className="mb-2">
+          <label className="text-xs text-gray-700 block mb-1">Phone Number:</label>
+          <Input 
+            onChange={(e) => updateNodeData(id, { phoneNumber: e.target.value })} 
+            value={data?.phoneNumber || ""} 
+            placeholder="Enter phone number"
+            className="text-xs"
+          />
+        </div>
+        <TransitionConditions id={id} data={data} />
+      </NodesWrapper>
+    </div>
   );
 };
 

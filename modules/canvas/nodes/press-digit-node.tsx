@@ -19,30 +19,31 @@ const PressDigitNode = ({ id, data }: PressDigitNodeProps) => {
   }
 
   return (
-    <NodesWrapper nodeId={id} nodeType="pressDigitNode" title={data?.title || 'Press Digit'} handleTitleChange={handleTitleChange}>
-        <div className="mb-2">
-          <label className="text-xs text-gray-700 block mb-1">Instructions:</label>
-          <Textarea 
-            onChange={(e) => updateNodeData(id, { instructions: e.target.value })} 
-            value={data?.instructions || ""} 
-            placeholder="Enter instructions"
-            className="text-xs min-h-[60px]"
-          />
-        </div>
-        <div className="mb-2">
-          <label className="text-xs text-gray-700 block mb-1">Pause Delay (ms):</label>
-          <Input 
-            type="number"
-            onChange={(e) => updateNodeData(id, { pauseDetectionDelay: parseInt(e.target.value) || 0 })} 
-            value={data?.pauseDetectionDelay || 0} 
-            placeholder="0"
-            className="text-xs"
-          />
-        </div>
-        <TransitionConditions id={id} data={data} />
-        <Handle type="target" position={Position.Top} />
-        <Handle type="source" position={Position.Bottom} />
-    </NodesWrapper>
+    <div className="relative">
+      <Handle type="target" position={Position.Top} />
+      <NodesWrapper nodeId={id} nodeType="pressDigitNode" title={data?.title || 'Press Digit'} handleTitleChange={handleTitleChange}>
+          <div className="mb-2">
+            <label className="text-xs text-gray-700 block mb-1">Instructions:</label>
+            <Textarea 
+              onChange={(e) => updateNodeData(id, { instructions: e.target.value })} 
+              value={data?.instructions || ""} 
+              placeholder="Enter instructions"
+              className="text-xs min-h-[60px]"
+            />
+          </div>
+          <div className="mb-2">
+            <label className="text-xs text-gray-700 block mb-1">Pause Delay (ms):</label>
+            <Input 
+              type="number"
+              onChange={(e) => updateNodeData(id, { pauseDetectionDelay: parseInt(e.target.value) || 0 })} 
+              value={data?.pauseDetectionDelay || 0} 
+              placeholder="0"
+              className="text-xs"
+            />
+          </div>
+          <TransitionConditions id={id} data={data} />
+      </NodesWrapper>
+    </div>
   );
 };
 

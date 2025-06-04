@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import {  NodeProps } from 'reactflow';
+import { NodeProps, Handle, Position } from 'reactflow';
 import { NodesWrapper } from './nodes-wrapper/nodes-wrapper';
 import useFlowStore from '@/modules/store/flow-store';
 import { ConversationNodeData } from '@/modules/types/flow';
@@ -20,19 +20,22 @@ const ConversationNode = ({ id, data }: ConversationNodeProps) => {
   }
 
   return (
-    <NodesWrapper nodeId={id} nodeType="conversationNode" title={data?.title || 'Conversation'} handleTitleChange={handleTitleChange}>
-    <div className='flex flex-col'>
-      <Tabs defaultValue="prompt" className="w-full " onValueChange={(prompt)=> updateNodeData(id, { promptMode: prompt === "prompt " ? true : false })}>
-        <TabsList className='w-full bg-white'>
-          <TabsTrigger value="prompt" className={tabTriggerClass}>Prompt</TabsTrigger>
-          <TabsTrigger value="static" className={tabTriggerClass}>Static Sentence</TabsTrigger>
-        </TabsList>
-        <TabsContent value="prompt" className='w-full '><Textarea onChange={(value)=> updateNodeData(id, { prompt: value.target.value })} value={data?.prompt || ""} className='w-full h-full focus-visible:ring-0 focus-visible:ring-offset-0 '/></TabsContent>
-        <TabsContent value="static"><Textarea onChange={(value)=> updateNodeData(id, { prompt: value.target.value })} value={data?.prompt || ""} /></TabsContent>
-      </Tabs>
-      <TransitionConditions id={id} data={data} />
+    <div className="relative">
+      <Handle type="target" position={Position.Top} />
+      <NodesWrapper nodeId={id} nodeType="conversationNode" title={data?.title || 'Conversation'} handleTitleChange={handleTitleChange}>
+      <div className='flex flex-col'>
+        <Tabs defaultValue="prompt" className="w-full " onValueChange={(prompt)=> updateNodeData(id, { promptMode: prompt === "prompt " ? true : false })}>
+          <TabsList className='w-full bg-white'>
+            <TabsTrigger value="prompt" className={tabTriggerClass}>Prompt</TabsTrigger>
+            <TabsTrigger value="static" className={tabTriggerClass}>Static Sentence</TabsTrigger>
+          </TabsList>
+          <TabsContent value="prompt" className='w-full '><Textarea onChange={(value)=> updateNodeData(id, { prompt: value.target.value })} value={data?.prompt || ""} className='w-full h-full focus-visible:ring-0 focus-visible:ring-offset-0 '/></TabsContent>
+          <TabsContent value="static"><Textarea onChange={(value)=> updateNodeData(id, { prompt: value.target.value })} value={data?.prompt || ""} /></TabsContent>
+        </Tabs>
+        <TransitionConditions id={id} data={data} />
+      </div>
+      </NodesWrapper>
     </div>
-    </NodesWrapper>
   );
 };
 

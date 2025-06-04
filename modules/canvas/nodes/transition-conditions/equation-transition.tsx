@@ -22,7 +22,7 @@ export const EquationTransition = ({id, index, transition, data}:{id: string, in
         setIsModalOpen(false);
       };
     return (
-        <div key={index} className={`flex items-center justify-between p-2 bg-neutral-50 rounded-md `} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+        <div key={index} className={`flex items-center justify-between p-2 bg-neutral-50 rounded-md relative`} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
             <div className="flex items-center gap-2 flex-1 min-w-0"> <Sigma className="size-3"/> <p className="text-wrap flex-1 min-w-0 break-words text-sm leading-tight">{transition.content}</p></div>
             <div className={`flex items-center gap-3 text-neutral-500 flex-shrink-0 ${isHovered ? "opacity-100" : "opacity-0"}`}>
                 <PencilLine className="size-3 hover:cursor-pointer hover:text-neutral-800" onClick={() => setIsModalOpen(true)} />
@@ -35,7 +35,12 @@ export const EquationTransition = ({id, index, transition, data}:{id: string, in
                     onClose={handleModalClose}
                 />
             )}
-            <Handle type="target" position={Position.Right}  />
+            <Handle 
+                type="source" 
+                position={Position.Right} 
+                id={`equation-${index}`}
+                style={{ right: -8, top: '50%', transform: 'translateY(-50%)' }}
+            />
         </div>
     )
 }
