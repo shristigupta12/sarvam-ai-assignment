@@ -14,14 +14,16 @@ export const useCreateNode = () => {
       id: generateUniqueNodeId(),
       type,
       position,
-      data: {},
+      data: {title: ""},
     };
 
-    let initialData: CustomNodeData = {};
+    let initialData: CustomNodeData = {title: ""};
     
     switch (type) {
       case 'conversationNode':
-        initialData = { prompt: 'New conversation', title: "Conversation" } as ConversationNodeData;
+        initialData = { prompt: 'New conversation', title: "Conversation", promptMode: true, transitions: [
+          {type: "PROMPT", content: "Describe the transition condition"}
+        ] } as ConversationNodeData;
         break;
       case 'functionNode':
         initialData = { functionName: 'newFunction', title: "Function", waitForResult: false, speakDuringExecution: false, globalNode: false } as FunctionNodeData;
@@ -36,7 +38,7 @@ export const useCreateNode = () => {
         initialData = { title: "End Call" } as EndCallNodeData;
         break;
       default:
-        initialData = {};
+        initialData = {title: ""};
         break;
     }
     
