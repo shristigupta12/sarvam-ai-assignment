@@ -35,7 +35,7 @@ const ConversationNode = ({ id, data }: ConversationNodeProps) => {
       />
       <NodesWrapper nodeId={id} nodeType="conversationNode" title={data?.title || ''} handleTitleChange={handleTitleChange}>
       <div className='flex flex-col'>
-        <Tabs defaultValue="prompt" className="w-full " onValueChange={(prompt)=> updateNodeData(id, { promptMode: prompt === "prompt " ? true : false })}>
+        <Tabs value={data?.promptMode ? "prompt" : "static"} className="w-full " onValueChange={(value)=> updateNodeData(id, { promptMode: value === "prompt" })}>
           <TabsList className='w-full bg-white'>
             <TabsTrigger value="prompt" className={tabTriggerClass}>Prompt</TabsTrigger>
             <TabsTrigger value="static" className={tabTriggerClass}>Static Sentence</TabsTrigger>

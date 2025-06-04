@@ -7,7 +7,7 @@ import useFlowStore from '@/modules/store/flow-store';
 import { CallTransferNode, ConversationNode, EndCallNode, FunctionNode, PressDigitNode } from './canvas/nodes';
 import NodeSidebar from './node-sidebar/node-sidebar';
 import CustomEdge from './canvas/edges/custom-edge';
-import NodeSettingsPanel from './node-settings-panel/NodeSettingsPanel';
+import NodeSettingsPanel from './node-settings-panel/node-settings-panel';
 import { SidebarProvider } from './providers/sidebar-provider';
 import { useCreateNode } from './hooks/useCreateNode';
 import { NodeType } from './interfaces/main';
@@ -111,10 +111,10 @@ const FlowCanvas = () => {
         }
       `}</style>
       
-      <div className="flex h-screen bg-primary-50">
+      <div className="flex h-screen bg-neutral-50">
         <NodeSidebar />
 
-      <div className="flex-grow h-full bg-gradient-to-r from-primary-50 to-white " ref={reactFlowWrapper}>
+      <div className="flex-grow h-full " ref={reactFlowWrapper}>
         <ReactFlow
           nodes={nodes as FlowNode<CustomNodeData>[]}
           edges={edges as Edge<CustomEdgeData>[]}

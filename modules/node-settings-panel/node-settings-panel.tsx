@@ -7,7 +7,9 @@ import {
   FunctionNodeData,
   CallTransferNodeData,
   PressDigitNodeData,
-  CustomNodeData, 
+  CustomNodeData,
+  EndCallNodeData,
+  TransitionType
 } from '@/modules/types/flow';
 
 const NodeSettingsPanel: React.FC = () => {
@@ -32,6 +34,76 @@ const NodeSettingsPanel: React.FC = () => {
       </div>
     );
 
+    const renderTransitionsEditor = (transitions: TransitionType[], nodeId: string) => (
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700 mb-2">Transitions:</label>
+        {transitions.map((transition, index) => (
+          <div key={index} className="mb-3 p-3 border border-gray-200 rounded-md bg-gray-50">
+            <div className="mb-2">
+              <label className="block text-xs font-medium text-gray-600 mb-1">Type:</label>
+              <select
+                value={transition.type}
+                onChange={(e) => {
+                  const newTransitions = [...transitions];
+                  newTransitions[index] = { ...transition, type: e.target.value as "EQUATION" | "PROMPT" };
+                  updateNodeData(nodeId, { transitions: newTransitions });
+                }}
+                className="w-full p-1 text-sm border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="EQUATION">EQUATION</option>
+                <option value="PROMPT">PROMPT</option>
+              </select>
+            </div>
+            <div className="mb-2">
+              <label className="block text-xs font-medium text-gray-600 mb-1">Content:</label>
+              <input
+                type="text"
+                value={transition.content}
+                onChange={(e) => {
+                  const newTransitions = [...transitions];
+                  newTransitions[index] = { ...transition, content: e.target.value };
+                  updateNodeData(nodeId, { transitions: newTransitions });
+                }}
+                className="w-full p-1 text-sm border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter transition content"
+              />
+            </div>
+            <button
+              onClick={() => {
+                const newTransitions = transitions.filter((_, i) => i !== index);
+                updateNodeData(nodeId, { transitions: newTransitions });
+              }}
+              className="text-xs text-neutral-500"
+            >
+              Remove Transition
+            </button>
+          </div>
+        ))}
+        <button
+          onClick={() => {
+            const newTransitions = [...transitions, { type: "PROMPT" as const, content: "" }];
+            updateNodeData(nodeId, { transitions: newTransitions });
+          }}
+          className="text-sm text-primary-300"
+        >
+          + Add Transition
+        </button>
+      </div>
+    );
+
+    const renderCommonFields = (nodeData: CustomNodeData, nodeId: string, showTransitions: boolean = true) => (
+      <>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Title:</label>
+        <input
+          type="text"
+          value={nodeData?.title || ''}
+          onChange={(e) => updateNodeData(nodeId, { title: e.target.value })}
+          className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 mb-3"
+          placeholder="Enter node title"
+        />
+        {showTransitions && renderTransitionsEditor(nodeData?.transitions || [], nodeId)}
+      </>
+    );
 
     const renderNodeSettings = (node: Node<CustomNodeData>) => {
       switch (node.type) {
@@ -39,6 +111,20 @@ const NodeSettingsPanel: React.FC = () => {
           const conversationData = node.data as ConversationNodeData;
           return (
             <>
+              {renderCommonFields(conversationData, node.id)}
+              <div className="flex items-center justify-between mb-3">
+                <label htmlFor="toggle-Prompt Mode" className="text-sm font-medium text-gray-700">Prompt Mode:</label>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    id="toggle-Prompt Mode"
+                    className="sr-only peer"
+                    checked={conversationData?.promptMode || false}
+                    onChange={(e) => updateNodeData(node.id, { promptMode: e.target.checked })}
+                  />
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-300"></div>
+                </label>
+              </div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Prompt:</label>
               <textarea
                 value={conversationData?.prompt || ''}
@@ -52,6 +138,7 @@ const NodeSettingsPanel: React.FC = () => {
           const functionData = node.data as FunctionNodeData;
           return (
             <>
+              {renderCommonFields(functionData, node.id)}
               <label className="block text-sm font-medium text-gray-700 mb-1">Function Name:</label>
               <input
                 type="text"
@@ -60,21 +147,13 @@ const NodeSettingsPanel: React.FC = () => {
                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 mb-3"
                 placeholder="e.g., check_calendar_availability"
               />
-              {renderToggle("Wait for Result", functionData?.waitForResult || false, (checked) =>
-                updateNodeData(node.id, { waitForResult: checked })
-              )}
-              {renderToggle("Speak During Execution", functionData?.speakDuringExecution || false, (checked) =>
-                updateNodeData(node.id, { speakDuringExecution: checked })
-              )}
-              {renderToggle("Global Node", functionData?.globalNode || false, (checked) =>
-                updateNodeData(node.id, { globalNode: checked })
-              )}
             </>
           );
         case 'callTransferNode':
           const callTransferData = node.data as CallTransferNodeData;
           return (
             <>
+              {renderCommonFields(callTransferData, node.id)}
               <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number:</label>
               <input
                 type="text"
@@ -89,6 +168,7 @@ const NodeSettingsPanel: React.FC = () => {
           const pressDigitData = node.data as PressDigitNodeData;
           return (
             <>
+              {renderCommonFields(pressDigitData, node.id)}
               <label className="block text-sm font-medium text-gray-700 mb-1">Instructions:</label>
               <input
                 type="text"
@@ -108,8 +188,12 @@ const NodeSettingsPanel: React.FC = () => {
             </>
           );
         case 'endCallNode':
+          const endCallData = node.data as EndCallNodeData;
           return (
-            <p className="text-sm text-gray-600">This node marks the termination of the flow.</p>
+            <>
+              {renderCommonFields(endCallData, node.id, false)}
+              <p className="text-sm text-gray-600">This node marks the termination of the flow.</p>
+            </>
           );
         default:
           return <p className="text-sm text-gray-600">No specific settings for this node type.</p>;
@@ -132,11 +216,11 @@ const NodeSettingsPanel: React.FC = () => {
     };
 
     return (
-      <aside className="border-l border-gray-300 p-4 bg-gray-50 h-full w-80 overflow-y-auto">
-        <div className="text-lg font-bold mb-4">Properties</div>
+      <aside className="border-l border-neutral-300 bg-white p-4  h-full w-80 overflow-y-auto">
+        <div className="text-lg font-semibold mb-3">Properties</div>
 
         {!selectedNode && !selectedEdge && (
-          <p className="text-sm text-gray-600">Select a node or an edge to view its properties.</p>
+          <p className="text-sm text-neutral-500">Select a node or an edge to view its properties.</p>
         )}
 
         {selectedNode && (
