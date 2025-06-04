@@ -89,7 +89,7 @@ const FlowCanvas = () => {
 
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-neutral-50">
       <NodeSidebar />
 
       <div className="flex-grow h-full bg-neutral-50" ref={reactFlowWrapper}>
