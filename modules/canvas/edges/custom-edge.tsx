@@ -7,7 +7,7 @@ import {
     Edge as ReactFlowEdge
 } from 'reactflow';
 import useFlowStore from '@/modules/store/flow-store';
-import { CustomEdgeData } from '@/modules/store/flow-store';
+import { CustomEdgeData } from '@/modules/types/flow';
 
 const CustomEdge: React.FC<EdgeProps<CustomEdgeData>> = ({
     id,
@@ -40,7 +40,7 @@ const CustomEdge: React.FC<EdgeProps<CustomEdgeData>> = ({
 
     const handleDeleteClick = (event: React.MouseEvent) => {
         event.stopPropagation(); 
-        const edgeToDelete: ReactFlowEdge = { id, source: '', target: '' }; // Minimal properties required by Edge
+        const edgeToDelete: ReactFlowEdge = { id, source: '', target: '' }; 
         onEdgesDelete([edgeToDelete]); 
     };
     

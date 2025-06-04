@@ -16,29 +16,39 @@ import {
   OnSelectionChangeFunc,
 } from 'reactflow';
 
+import {
+  CustomEdgeData,
+  ConversationNodeData,
+  FunctionNodeData,
+  CallTransferNodeData,
+  PressDigitNodeData,
+  EndCallNodeData,
+  CustomNodeData, // Import the union type
+} from '@/modules/types/flow';
 
-export interface CustomEdgeData {
-  condition?: string;
-}
+
+// export interface CustomEdgeData {
+//   condition?: string;
+// }
 
 interface SelectedElements {
-  nodes: Node[];
+  nodes: Node<CustomNodeData>[]; 
   edges: Edge<CustomEdgeData>[]; 
 }
 
 interface FlowState {
-  nodes: Node[];
-  edges: Edge<CustomEdgeData>[]; 
+  nodes: Node<CustomNodeData>[];
+  edges: Edge<CustomEdgeData>[];
   selectedElements: SelectedElements;
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
   onEdgesDelete: OnEdgesDelete;
   onSelectionChange: OnSelectionChangeFunc;
-  addNode: (node: Node) => void;
+  addNode: (node: Node<CustomNodeData>) => void;
   deleteNode: (nodeId: string) => void;
   duplicateNode: (nodeId: string) => void;
-  updateNodeData: (nodeId: string, data: Partial<Node['data']>) => void;
+  updateNodeData: (nodeId: string, data: Partial<CustomNodeData>) => void;
   updateEdgeData: (edgeId: string, data: Partial<CustomEdgeData>) => void;
 }
 
@@ -52,7 +62,7 @@ const useFlowStore = create<FlowState>((set, get) => ({
       const newNodes = applyNodeChanges(changes, state.nodes);
       const newSelectedNodes = state.selectedElements.nodes
         .map(selectedNode => newNodes.find(n => n.id === selectedNode.id))
-        .filter(Boolean) as Node[]; 
+        .filter(Boolean) as Node<CustomNodeData>[]; 
 
       return {
         nodes: newNodes,
@@ -116,10 +126,10 @@ const useFlowStore = create<FlowState>((set, get) => ({
   },
 
   onSelectionChange: ({ nodes: newlySelectedNodes, edges: newlySelectedEdges }) => {
-    set({ selectedElements: { nodes: newlySelectedNodes, edges: newlySelectedEdges as Edge<CustomEdgeData>[] } });
+    set({ selectedElements: { nodes: newlySelectedNodes as Node<CustomNodeData>[], edges: newlySelectedEdges as Edge<CustomEdgeData>[] } });
   },
 
-  addNode: (node: Node) => {
+  addNode: (node: Node<CustomNodeData>) => {
     set((state) => ({
       nodes: [...state.nodes, node],
     }));
@@ -149,7 +159,7 @@ const useFlowStore = create<FlowState>((set, get) => ({
       const nodeToDuplicate = state.nodes.find((node) => node.id === nodeId);
       if (!nodeToDuplicate) return state;
 
-      const duplicatedNode: Node = {
+      const duplicatedNode: Node<CustomNodeData> = {
         ...nodeToDuplicate,
         id: generateUniqueNodeId(),
         position: {
@@ -168,14 +178,14 @@ const useFlowStore = create<FlowState>((set, get) => ({
         ...state,
         nodes: [...updatedNodes, duplicatedNode],
         selectedElements: {
-          nodes: [duplicatedNode], // Only the duplicated node is selected
-          edges: [], // Clear edge selection
+          nodes: [duplicatedNode], 
+          edges: [], 
         },
       };
     });
   },
 
-  updateNodeData: (nodeId: string, newData: Partial<Node['data']>) => {
+  updateNodeData: (nodeId: string, newData: Partial<CustomNodeData>) => {
     set((state) => {
       const newNodes = state.nodes.map((node) =>
         node.id === nodeId
@@ -185,7 +195,7 @@ const useFlowStore = create<FlowState>((set, get) => ({
 
       const newSelectedNodes = state.selectedElements.nodes
         .map(selectedNode => newNodes.find(n => n.id === selectedNode.id))
-        .filter(Boolean) as Node[];
+        .filter(Boolean) as Node<CustomNodeData>[];
 
       return {
         nodes: newNodes,
