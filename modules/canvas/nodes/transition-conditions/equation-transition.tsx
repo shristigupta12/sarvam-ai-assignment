@@ -1,6 +1,6 @@
 import { CustomNodeData, TransitionType } from "@/modules/types/flow"
 import { Handle } from "reactflow"
-import { PencilLine } from "lucide-react"
+import { PencilLine, Sigma } from "lucide-react"
 import { Position } from "reactflow"
 import { DeleteTransition } from "./delete-transition"
 import { EquationModal } from "./equationModal"
@@ -9,6 +9,7 @@ import useFlowStore from "@/modules/store/flow-store"
 
 export const EquationTransition = ({id, index, transition, data}:{id: string, index: number, transition: TransitionType, data: CustomNodeData}) => {
     const updateNodeData = useFlowStore((state) => state.updateNodeData)
+    const [isHovered, setIsHovered] = useState(false);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -21,12 +22,10 @@ export const EquationTransition = ({id, index, transition, data}:{id: string, in
         setIsModalOpen(false);
       };
     return (
-        <div key={index} className="flex items-center justify-between p-1 bg-neutral-50 rounded-md">
-            <p>{transition.content}</p>
-            <div className="flex items-center gap-1">
-                <button className="border-none outline-none" onClick={() => setIsModalOpen(true)}>
-                    <PencilLine />
-                </button>
+        <div key={index} className={`flex items-center justify-between p-2 bg-neutral-50 rounded-md `} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+            <div className="flex items-center gap-2 flex-1 min-w-0"> <Sigma className="size-3"/> <p className="text-wrap flex-1 min-w-0 break-words text-sm leading-tight">{transition.content}</p></div>
+            <div className={`flex items-center gap-3 text-neutral-500 flex-shrink-0 ${isHovered ? "opacity-100" : "opacity-0"}`}>
+                <PencilLine className="size-3 hover:cursor-pointer hover:text-neutral-800" onClick={() => setIsModalOpen(true)} />
                 <DeleteTransition id={id} data={data} index={index} />
             </div>
             {isModalOpen && (

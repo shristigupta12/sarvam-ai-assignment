@@ -1,6 +1,13 @@
-import { useEffect } from "react";
-
-import { useState } from "react";
+import { Trash2, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 export const EquationModal = ({ initialConditionString, onSave, onClose }: { initialConditionString: string, onSave: ( conditionString: string) => void, onClose: () => void }) => {
     const [conditions, setConditions] = useState<{
@@ -86,57 +93,74 @@ export const EquationModal = ({ initialConditionString, onSave, onClose }: { ini
     };
   
     return (
-      <div className="modal-overlay text-neutral-600 bg-white absolute -right-40">
-        <div className="modal-content">
+      <div className="modal-overlay text-neutral-600 bg-white absolute -right-100 py-2 px-4 rounded-md border flex flex-col gap-2 w-[450px]">
+          <div className="modal-content pb-3">
             <div className="flex justify-between items-center">
-          <h3>Configure conditions</h3>
-          <button className="close-button" onClick={onClose}>X</button>
+            <h3 className="text-md font-semibold text-neutral-700">Configure conditions</h3>
+            <button className="close-button hover:cursor-pointer" onClick={onClose}><X className="size-4" /></button>
           </div>
   
-          <div className="match-type-selector">
-            <select value={matchType} onChange={(e) => setMatchType(e.target.value)}>
-              <option value="any">Any</option>
-              <option value="all">All</option>
-            </select>
-            <span> of the following conditions match</span>
+          <div className="match-type-selector py-2 flex items-center gap-1">
+            <Select value={matchType} onValueChange={setMatchType}>
+              <SelectTrigger className="w-fit">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="any">Any</SelectItem>
+                <SelectItem value="all">All</SelectItem>
+              </SelectContent>
+            </Select>
+            <span className="ml-2">of the following conditions match</span>
           </div>
   
-          <div className="conditions-list">
+          {conditions.length > 0 && <div className="conditions-list pb-3 flex flex-col gap-2">
             {conditions.map((cond, index) => (
-              <div key={cond.id} className="condition-row flex items-center gap-2">
-                <input
-                  type="text"
-                  placeholder="{{Variables}}"
-                  value={cond.variable}
-                  onChange={(e) => handleConditionChange(cond.id, 'variable', e.target.value)}
-                />
-                <select
-                  value={cond.operator}
-                  onChange={(e) => handleConditionChange(cond.id, 'operator', e.target.value)}
-                >
-                  <option value="=">=</option>
-                  <option value="!=">!=</option>
-                  <option value=">">&gt;</option>
-                  <option value="<">&lt;</option>
-                  <option value=">=">&gt;=</option>
-                  <option value="<=">&lt;=</option>
-                </select>
-                <input
-                  type="text"
-                  placeholder="Value"
-                  value={cond.value}
-                  onChange={(e) => handleConditionChange(cond.id, 'value', e.target.value)}
-                />
-                <button onClick={() => handleRemoveConditionRow(cond.id)}>🗑️</button>
+              <div key={cond.id} className="condition-row flex items-center gap-2 w-full justify-between">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    placeholder="{{Variables}}"
+                    value={cond.variable}
+                    onChange={(e) => handleConditionChange(cond.id, 'variable', e.target.value)}
+                    className="border rounded-md border-neutral-300 p-2 text-sm leading-tight hover:cursor-pointer w-[100px]"
+                  />
+                  <Select
+                    value={cond.operator}
+                    onValueChange={(value) => handleConditionChange(cond.id, 'operator', value)}
+                  >
+                    <SelectTrigger className="w-[100px] shadow-none border border-neutral-300 ">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="=">=</SelectItem>
+                      <SelectItem value="!=">!=</SelectItem>
+                      <SelectItem value=">">&gt;</SelectItem>
+                      <SelectItem value="<">&lt;</SelectItem>
+                      <SelectItem value=">=">&gt;=</SelectItem>
+                      <SelectItem value="<=">&lt;=</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <input
+                    type="text"
+                    placeholder="Value"
+                    value={cond.value}
+                    onChange={(e) => handleConditionChange(cond.id, 'value', e.target.value)}
+                    className="border rounded-md border-neutral-300 p-2 text-sm leading-tight hover:cursor-pointer w-[100px]"
+                  />
+                </div>
+                <button onClick={(e) => {
+                  e.stopPropagation();
+                  handleRemoveConditionRow(cond.id);
+                }} className="hover:cursor-pointer"><Trash2 className="size-4" /></button>
               </div>
             ))}
-          </div>
+          </div>}
   
-          <button onClick={handleAddConditionRow}>+ Add Condition</button>
+          <button onClick={handleAddConditionRow} className="text-sm text-neutral-500 pb-3">+ Add Condition</button>
   
-          <div className="modal-actions">
-            <button onClick={handleSave}>Save</button>
-            <button onClick={onClose}>Cancel</button>
+          <div className="modal-actions w-full items-center flex justify-between">
+            <Button onClick={handleSave} className="bg-primary-300 hover:bg-primary-300 hover:cursor-pointer">Save</Button>
+            <Button onClick={onClose} variant="outline" className="hover:cursor-pointer">Cancel</Button>
           </div>
         </div>
       </div>

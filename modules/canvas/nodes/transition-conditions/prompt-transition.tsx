@@ -1,6 +1,6 @@
 import { CustomNodeData, TransitionType } from "@/modules/types/flow"
 import { Handle } from "reactflow"
-import { PencilLine } from "lucide-react"
+import { PencilLine, SunMedium   } from "lucide-react"
 import { Position } from "reactflow"
 import { DeleteTransition } from "./delete-transition"
 import { useState } from "react"
@@ -12,6 +12,7 @@ export const PromptTransition = ({id, index, transition, data}:{id: string, inde
     const handleEditPromptTransitionContent = (e: React.ChangeEvent<HTMLInputElement>) => {
         updateNodeData(id, { transitions: data.transitions.map((t, i) => i === index ? { ...t, content: e.target.value } : t) })
     }
+    const [isHovered, setIsHovered] = useState(false);
 
     const handleToggleEdit = () => {
         setIsEditing(!isEditing)
@@ -22,7 +23,8 @@ export const PromptTransition = ({id, index, transition, data}:{id: string, inde
     }
 
     return (
-        <div key={index} className="flex items-center justify-between p-1 bg-neutral-50 rounded-md">
+        <div key={index} className="flex items-center justify-between p-2 gap-1 bg-neutral-50 rounded-md w-full" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+            <div className="flex items-center gap-2 flex-1 min-w-0"> <SunMedium className="size-3"/> 
             {isEditing ? (
                 <input 
                     type="text" 
@@ -30,14 +32,14 @@ export const PromptTransition = ({id, index, transition, data}:{id: string, inde
                     onChange={handleEditPromptTransitionContent}
                     onBlur={handleBlur}
                     autoFocus
+                    className="flex-1 min-w-0 text-xs focus:outline-none"
                 />
             ) : (
-                <p>{transition.content}</p>
+                <p className="text-wrap flex-1 min-w-0 break-words text-xs leading-tight">{transition.content}</p>
             )}
-            <div className="flex items-center gap-1">
-                <button className="border-none outline-none" onClick={handleToggleEdit}>
-                    <PencilLine />
-                </button>
+            </div>
+            <div className={`flex text-neutral-500 gap-3 flex-shrink-0  ${isHovered ? "opacity-100" : "opacity-0"}`}>
+                <PencilLine className="size-3 hover:cursor-pointer hover:text-neutral-800" onClick={handleToggleEdit} />
                 <DeleteTransition id={id} data={data} index={index} />
             </div>
             <Handle type="target" position={Position.Right}  />

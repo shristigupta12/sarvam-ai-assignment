@@ -12,8 +12,6 @@ export const DeleteTransition = ({id, data, index}:{id: string, data: CustomNode
     }
 
     return (
-        <button className="border-none outline-none" onClick={() => removeTransition(index)}>
-            <Trash />
-        </button>
+        <Trash className="size-3 hover:cursor-pointer hover:text-neutral-800" onClick={() => removeTransition(index)}/>
     )
 }
