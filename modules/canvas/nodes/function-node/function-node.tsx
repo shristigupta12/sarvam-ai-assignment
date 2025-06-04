@@ -1,21 +1,21 @@
 import React, { memo } from 'react';
 import { Handle, Position, NodeProps } from 'reactflow';
-import { NodesWrapper } from './nodes-wrapper/nodes-wrapper';
+import { NodesWrapper } from '../nodes-wrapper/nodes-wrapper';
 import useFlowStore from '@/modules/store/flow-store';
-import { CallTransferNodeData } from '@/modules/types/flow';
-import { TransitionConditions } from './transition-conditions/transition-conditions'; 
+import { TransitionConditions } from '../transition-conditions/transition-conditions';
+import { FunctionNodeData } from '@/modules/types/flow';
 import { Input } from '@/components/ui/input';
 
-interface CallTransferNodeProps extends NodeProps<CallTransferNodeData> {}
+interface FunctionNodeProps extends NodeProps<FunctionNodeData> {}
 
-const CallTransferNode = ({ id, data }: CallTransferNodeProps) => {
-  
+const FunctionNode = ({ id, data }: FunctionNodeProps) => {
+
   const updateNodeData = useFlowStore((state) => state.updateNodeData);
 
   const handleTitleChange = (title: string) => {
     updateNodeData(id, { title });
   }
-
+  
   return (
     <div className="relative">
       <Handle 
@@ -30,14 +30,14 @@ const CallTransferNode = ({ id, data }: CallTransferNodeProps) => {
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}
       />
-      <NodesWrapper nodeId={id} nodeType="callTransferNode" title={data?.title || ''} handleTitleChange={handleTitleChange}>
+      <NodesWrapper nodeId={id} nodeType="functionNode" title={data?.title || ''} handleTitleChange={handleTitleChange}>
         <div className="flex flex-col gap-2">
           <div>
-            <label className="text-xs sm:text-sm text-gray-700 block mb-1 font-medium">Phone Number:</label>
+            <label className="text-xs sm:text-sm text-gray-700 block mb-1 font-medium">Function Name:</label>
             <Input 
-              onChange={(e) => updateNodeData(id, { phoneNumber: e.target.value })} 
-              value={data?.phoneNumber || ""} 
-              placeholder="e.g., +1234567890"
+              onChange={(e) => updateNodeData(id, { functionName: e.target.value })} 
+              value={data?.functionName || ""} 
+              placeholder="e.g., check_calendar_availability"
               className="text-xs sm:text-sm h-8 sm:h-9"
             />
           </div>
@@ -48,4 +48,4 @@ const CallTransferNode = ({ id, data }: CallTransferNodeProps) => {
   );
 };
 
-export default memo(CallTransferNode);
+export default memo(FunctionNode);

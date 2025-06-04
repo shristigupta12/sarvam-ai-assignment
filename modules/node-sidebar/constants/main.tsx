@@ -1,7 +1,6 @@
 
 import { NodeType } from "@/modules/interfaces/main";
-import { Binary, Cog, Hash, Headset, Square } from "lucide-react";
-import { NodeIcons, NodeTextColors } from "@/modules/constants/node-data";
+import { NodeIcons } from "@/modules/constants/node-data";
 
 export const SidebarComponentData = [
     {

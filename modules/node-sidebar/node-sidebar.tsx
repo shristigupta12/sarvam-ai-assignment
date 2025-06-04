@@ -4,37 +4,51 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarComponent } from "./components/sidebar-component";
 import { SidebarComponentData } from "./constants/main";
 import { PanelRight } from "lucide-react";
+import { useSidebar } from "../providers/sidebar-provider";
 
 const NodeSidebar: React.FC = () => {
+
+  const {isOpen, setIsOpen} = useSidebar();
   
   return (
     <motion.aside 
-      className="border-r border-neutral-300 min-w-[14vw] bg-white h-full overflow-y-auto flex flex-col"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      className="border-r border-neutral-300 bg-white h-full overflow-hidden flex flex-col gap-4 pt-4 relative z-10 md:relative md:z-auto"
+      initial={{ opacity: 0, x: -300 }}
+      animate={{ 
+        opacity: 1, 
+        x: 0,
+        width: isOpen ? "min(280px, 20vw)" : "min(64px, 10vw)"
+      }}
       transition={{ duration: 0.5, ease: "easeOut" }}
+      style={{
+        minWidth: isOpen ? "240px" : "48px",
+        maxWidth: isOpen ? "320px" : "80px"
+      }}
     >
-      <div className="flex gap-2 justify-between items-center p-5">
-        <h1 className=" font-semibold text-xl text-primary-300">sarvam</h1>
-        <PanelRight className="size-[18px] text-neutral-800 cursor-pointer" />
+      <div className={`flex gap-2 justify-between items-center px-3 sm:px-5 `}>
+        {isOpen && <h1 className="font-semibold text-lg sm:text-xl text-primary-300 truncate">sarvam</h1>}
+        <PanelRight 
+          className="size-[15px] text-neutral-600 cursor-pointer flex-shrink-0" 
+          onClick={() => setIsOpen(!isOpen)} 
+        />
       </div>
-      <div className="flex flex-col gap-1 p-4">
-        <div className="text-lg font-semibold text-neutral-700">Add New Node</div>
-        <p className="text-sm text-neutral-400 ">
-          Click or drag
-        </p>
-      </div>
+      
+      {isOpen && (
+        <div className="flex flex-col px-3 sm:px-4">
+          <div className="text-sm sm:text-md font-semibold text-neutral-700">Add New Node</div>
+          <p className="text-xs text-neutral-400">Click or drag</p>
+        </div>
+      )}
 
       <Separator />
 
-      <div className="flex flex-col gap-3 p-4 text-neutral-600">
+      <div className={`flex flex-col gap-2 w-full text-neutral-800 overflow-y-auto flex-1 ${
+        isOpen ? "px-3 sm:px-4 items-start" : "px-2 items-center"
+      }`}>
         {SidebarComponentData.map((item) => (
           <SidebarComponent key={item.nodeType} {...item} />
         ))}
       </div>
-
-      
-
     </motion.aside>
   );
 };

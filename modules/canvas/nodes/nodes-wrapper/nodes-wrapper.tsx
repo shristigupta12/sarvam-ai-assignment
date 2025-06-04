@@ -6,7 +6,9 @@ import { useState } from "react";
 import { EditNodeDropdown } from "./edit-node-dropdown";
 
 export const NodesWrapper = ({ nodeId, nodeType, title, handleTitleChange, children, className}:{ nodeId: string, nodeType: NodeType, title: string, handleTitleChange: (title: string) => void, children: React.ReactNode, className?: string}) => {
+    
     const [isEditing, setIsEditing] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
     
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' || e.key === 'Escape') {
@@ -15,9 +17,13 @@ export const NodesWrapper = ({ nodeId, nodeType, title, handleTitleChange, child
     };
     
     return(
-        <div className={cn("border rounded-md p-1 shadow-md min-w-[200px]", className, NodeBackgroundColors[nodeType] )}>
-            <div className={`p-2 flex items-center justify-between ${NodeTextColors[nodeType]} `}>
-                <div className="flex items-center gap-2">
+        <div 
+            className={cn("border rounded-md p-1 shadow-md w-full min-w-[280px] max-w-[400px] sm:max-w-[450px] md:max-w-[500px] text-neutral-600", className, NodeBackgroundColors[nodeType] )}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            <div className={`p-2 flex items-center justify-between gap-2 sm:gap-3 ${NodeTextColors[nodeType]} `}>
+                <div className="flex items-center gap-2 flex-1 min-w-0 text-neutral-800">
                     {NodeIcons(nodeType, 4)}
                     {isEditing ? (
                         <input 
@@ -26,20 +32,20 @@ export const NodesWrapper = ({ nodeId, nodeType, title, handleTitleChange, child
                             onChange={(e) => handleTitleChange(e.target.value)} 
                             onBlur={() => setIsEditing(false)}
                             onKeyDown={handleKeyDown}
-                            className="border-none outline-none w-fit" 
+                            className="border-none outline-none w-full text-xs sm:text-sm flex-1 min-w-0 bg-transparent" 
                             autoFocus
                         />
                     ) : (
-                        <h3 className="text-sm font-medium">{title}</h3>
+                        <h3 className="text-xs sm:text-sm font-medium text-wrap flex-1 min-w-0 break-words leading-tight">{title}</h3>
                     )}
-                    <PencilLine className="w-4 h-4 cursor-pointer" onClick={() => setIsEditing(true)} />
+                    <PencilLine className={`w-3 h-3 sm:w-4 sm:h-4 cursor-pointer flex-shrink-0 transition-opacity ${isHovered? "opacity-100" : "opacity-0"}`} onClick={() => setIsEditing(true)} />
                 </div>
-                <div>
-                    <EditNodeDropdown id={nodeId} />
+                <div className="flex-shrink-0">
+                    <EditNodeDropdown id={nodeId} className={`transition-opacity ${isHovered? "opacity-100" : "opacity-0"}`} />
                 </div>
             </div>
             {nodeType!="endCallNode" &&
-                <div className="border bg-white rounded-md p-2">
+                <div className="border bg-white rounded-md p-1.5 sm:p-2">
                     {children}
                 </div>
             }
