@@ -134,7 +134,6 @@ const FlowCanvas = () => {
             connectionLineType={ConnectionLineType.SmoothStep}
             selectNodesOnDrag={false}
             panOnDrag={true}
-            fitView
             onDrop={onDrop}
             onDragOver={onDragOver}
           >

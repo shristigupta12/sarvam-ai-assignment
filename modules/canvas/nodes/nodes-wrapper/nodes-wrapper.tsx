@@ -23,7 +23,7 @@ export const NodesWrapper = ({ nodeId, nodeType, title, handleTitleChange, child
             onMouseLeave={() => setIsHovered(false)}
         >
             <div className={`p-2 flex items-center justify-between gap-2 sm:gap-3 ${NodeTextColors[nodeType]} `}>
-                <div className="flex items-center gap-2 flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-1 min-w-0 text-neutral-800">
                     {NodeIcons(nodeType, 4)}
                     {isEditing ? (
                         <input 
