@@ -16,9 +16,23 @@ const EndCallNode = ({ id, data }: EndCallNodeProps) => {
   }
 
   return (
-    <NodesWrapper nodeId={id} nodeType="endCallNode" title={data?.title || ''} handleTitleChange={handleTitleChange}>
-      <Handle type="target" position={Position.Top} />
-    </NodesWrapper>
+    <div className="relative">
+      <Handle 
+        type="target" 
+        position={Position.Top} 
+        style={{
+          width: '12px',
+          height: '12px',
+          borderRadius: '50%',
+          backgroundColor: 'transparent',
+          border: '1px solid #6b7280',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+        }}
+      />
+      <NodesWrapper nodeId={id} nodeType="endCallNode" title={data?.title || ''} handleTitleChange={handleTitleChange}>
+        <div></div>
+      </NodesWrapper>
+    </div>
   );
 };
 
