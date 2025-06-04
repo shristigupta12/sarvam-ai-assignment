@@ -89,10 +89,10 @@ const FlowCanvas = () => {
 
 
   return (
-    <div className="flex h-screen bg-neutral-50">
+    <div className="flex h-screen bg-primary-50">
       <NodeSidebar />
 
-      <div className="flex-grow h-full bg-neutral-50" ref={reactFlowWrapper}>
+      <div className="flex-grow h-full bg-primary-50" ref={reactFlowWrapper}>
         <ReactFlow
           nodes={nodes as FlowNode<CustomNodeData>[]}
           edges={edges as Edge<CustomEdgeData>[]}

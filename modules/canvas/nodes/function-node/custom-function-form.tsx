@@ -4,7 +4,6 @@
 import { useState } from "react";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -49,27 +48,24 @@ export default function CustomFunctionDialog({ open, onOpenChange, onSave }: Cus
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] overflow-y-auto max-h-[80vh]">
         <DialogHeader>
           <DialogTitle>Custom Function</DialogTitle>
-          <DialogDescription>
-            JSON schema that defines the format in which the LLM will return. Please refer to the docs.
-          </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
-          <div>
+          <div className="flex flex-col gap-2">
             <Label>Name</Label>
             <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter the name of the custom function" />
           </div>
-          <div>
+          <div className="flex flex-col gap-2">
             <Label>Description</Label>
             <Input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Enter the description" />
           </div>
-          <div>
+          <div className="flex flex-col gap-2">
             <Label>Your URL</Label>
             <Input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="Enter the URL of the function" />
           </div>
-          <div>
+          <div className="flex flex-col gap-2">
             <Label>API Timeout (Optional)</Label>
             <Input
               type="number"
@@ -78,7 +74,7 @@ export default function CustomFunctionDialog({ open, onOpenChange, onSave }: Cus
               placeholder="Enter timeout in ms"
             />
           </div>
-          <div>
+          <div className="flex flex-col gap-2">
             <Label>Parameters (Optional)</Label>
             <Textarea
               className="min-h-[150px] font-mono text-sm"
@@ -86,19 +82,14 @@ export default function CustomFunctionDialog({ open, onOpenChange, onSave }: Cus
               onChange={(e) => setJsonSchema(e.target.value)}
               placeholder="Enter JSON Schema here..."
             />
-            <div className="flex gap-2 mt-2">
-              <Button variant="outline" size="sm">example 1</Button>
-              <Button variant="outline" size="sm">example 2</Button>
-              <Button variant="outline" size="sm">example 3</Button>
-            </div>
-            <Button onClick={handleFormatJson} className="mt-2 w-full">
+            <Button onClick={handleFormatJson} variant="outline" className="w-fit hover:cursor-pointer ml-auto">
               Format JSON
             </Button>
           </div>
         </div>
-        <DialogFooter className="mt-4">
+        <DialogFooter className="mt-4 w-full flex justify-between">
           <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button onClick={handleSave}>Save</Button>
+          <Button onClick={handleSave} className="bg-primary-300 hover:bg-primary-300 hover:cursor-pointer">Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

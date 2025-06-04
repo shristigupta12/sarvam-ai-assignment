@@ -94,51 +94,57 @@ export function ApiCallFormDialog({ open, onClose, useCase = null, onSave }: Api
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[600px] overflow-y-auto max-h-[80vh] flex flex-col gap-6">
         <DialogHeader>
-          <DialogTitle>API Call Function</DialogTitle>
+          <DialogTitle>Function</DialogTitle>
         </DialogHeader>
-
-        <Label>Name</Label>
-        <Input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
-
-        <Label>Description (Optional)</Label>
-        <Textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
-
-        <Label>API URL</Label>
-        <Input value={formData.url} onChange={(e) => setFormData({ ...formData, url: e.target.value })} />
-
-        <Label>Method</Label>
-        <select className="border rounded px-2 py-1" value={formData.method} onChange={(e) => setFormData({ ...formData, method: e.target.value })}>
+        <div className="flex flex-col gap-2">
+          <Label>Name</Label>
+          <Input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <Label>Description (Optional)</Label>
+          <Textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <Label>API URL</Label>
+          <Input value={formData.url} onChange={(e) => setFormData({ ...formData, url: e.target.value })} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <Label>Method</Label>
+          <select className="border rounded px-2 py-1" value={formData.method} onChange={(e) => setFormData({ ...formData, method: e.target.value })}>
           <option>GET</option>
           <option>POST</option>
-          <option>PUT</option>
-          <option>DELETE</option>
-        </select>
-
+            <option>PUT</option>
+            <option>DELETE</option>
+          </select>
+        </div>
+        <div className="flex flex-col gap-2">
         <Label>Headers (Optional)</Label>
         {formData.headers.map((pair, i) => (
           <div key={i} className="flex gap-2 mb-1">
             <Input placeholder="Key" value={pair.key} onChange={(e) => updateArrayField("headers", i, "key", e.target.value)} />
             <Input placeholder="Value" value={pair.value} onChange={(e) => updateArrayField("headers", i, "value", e.target.value)} />
-          </div>
-        ))}
-        <Button variant="outline" size="sm" onClick={() => addKeyValueField("headers")}>+ Add Header</Button>
-
+            </div>
+          ))}
+          <Button variant="outline" size="sm" onClick={() => addKeyValueField("headers")}>+ Add Header</Button>
+        </div>
+        <div className="flex flex-col gap-2">
         <Label>Query Params (Optional)</Label>
         {formData.queryParams.map((pair, i) => (
           <div key={i} className="flex gap-2 mb-1">
             <Input placeholder="Key" value={pair.key} onChange={(e) => updateArrayField("queryParams", i, "key", e.target.value)} />
             <Input placeholder="Value" value={pair.value} onChange={(e) => updateArrayField("queryParams", i, "value", e.target.value)} />
-          </div>
-        ))}
-        <Button variant="outline" size="sm" onClick={() => addKeyValueField("queryParams")}>+ Add Param</Button>
-
+            </div>
+          ))}
+          <Button variant="outline" size="sm" onClick={() => addKeyValueField("queryParams")}>+ Add Param</Button>
+        </div>
+        <div className="flex flex-col gap-2">
         <Label>Timeout (ms) (Optional)</Label>
         <Input value={formData.timeout} type="number" onChange={(e) => setFormData({ ...formData, timeout: e.target.value })} />
-
+        </div>
         <DialogFooter>
-          <Button onClick={handleSave}>Save</Button>
+          <Button onClick={handleSave} className="bg-primary-300 hover:bg-primary-300 hover:cursor-pointer">Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -168,7 +174,7 @@ export function ExecuteFunctionFormDialog({ open, onClose }: ExecuteFunctionForm
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[600px] overflow-y-auto max-h-[80vh]">
         <DialogHeader>
           <DialogTitle>Execute Function</DialogTitle>
         </DialogHeader>
