@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import ReactFlow, { ReactFlowProvider, Background, Controls, useReactFlow, Node as FlowNode, Edge, DefaultEdgeOptions } from 'reactflow';
 import 'reactflow/dist/style.css'; 
-import useFlowStore, { CustomEdgeData } from '@/modules/store/flow-store';
+import useFlowStore from '@/modules/store/flow-store';
 import { CallTransferNode, ConversationNode, EndCallNode, FunctionNode, PressDigitNode } from './canvas/nodes';
 import NodeSidebar from './node-sidebar/node-sidebar';
 import CustomEdge from './canvas/edges/custom-edge';
@@ -11,6 +11,7 @@ import NodeSettingsPanel from './node-settings-panel/NodeSettingsPanel';
 import { SidebarProvider } from './providers/sidebar-provider';
 import { useCreateNode } from './hooks/useCreateNode';
 import { NodeType } from './interfaces/main';
+import { CustomEdgeData, CustomNodeData } from './types/flow';
 
 
 const nodeTypes = {
@@ -35,10 +36,6 @@ const FlowCanvas = () => {
   const { screenToFlowPosition } = useReactFlow();
   const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onEdgesDelete, addNode, onSelectionChange, selectedElements} = useFlowStore();
   const { createNode } = useCreateNode();
-
-  useEffect(()=>{
-     console.log("selectedElements: ", selectedElements)
-  }, [selectedElements])
 
   const onDragOver = useCallback((event: React.DragEvent)=>{
     event?.preventDefault();
@@ -74,7 +71,7 @@ const FlowCanvas = () => {
 
       <div className="flex-grow h-full bg-neutral-50" ref={reactFlowWrapper}>
         <ReactFlow
-          nodes={nodes}
+          nodes={nodes as FlowNode<CustomNodeData>[]}
           edges={edges as Edge<CustomEdgeData>[]} 
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
