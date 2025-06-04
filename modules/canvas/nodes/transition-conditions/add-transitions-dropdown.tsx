@@ -2,9 +2,9 @@ import { Plus } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { AddPromptTransition } from "./add-prompt-transition"
 import { AddEquationTransition } from "./add-equation-transition"
-import { ConversationNodeData } from "@/modules/types/flow"
+import { CustomNodeData } from "@/modules/types/flow"
 
-export const AddTransitionsDropdown = ({id, data}:{id: string, data: ConversationNodeData}) => {
+export const AddTransitionsDropdown = ({id, data}:{id: string, data: CustomNodeData}) => {
     const [openDropdown, setOpenDropdown] = useState(false)
     const ref = useRef<HTMLDivElement>(null)
 

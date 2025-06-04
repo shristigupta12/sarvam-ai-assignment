@@ -3,12 +3,8 @@ import React, { memo } from 'react';
 import { Handle, Position, NodeProps } from 'reactflow';
 import useFlowStore from '@/modules/store/flow-store';
 import { NodesWrapper } from './nodes-wrapper/nodes-wrapper';
-
-export interface PressDigitNodeData {
-  instructions: string;
-  pauseDetectionDelay: number; 
-  title: string;
-}
+import { TransitionConditions } from './transition-conditions/transition-conditions';
+import { PressDigitNodeData } from '@/modules/types/flow';
 
 interface PressDigitNodeProps extends NodeProps<PressDigitNodeData> {}
 
@@ -25,7 +21,7 @@ const PressDigitNode = ({ id, data }: PressDigitNodeProps) => {
         
         <div className="text-xs text-gray-700">Instructions: {data?.instructions || 'No instructions'}</div>
         <div className="text-xs text-gray-700">Pause Delay: {data?.pauseDetectionDelay || 0}ms</div>
-
+        <TransitionConditions id={id} data={data} />
         <Handle type="target" position={Position.Top} />
         <Handle type="source" position={Position.Bottom} />
     </NodesWrapper>

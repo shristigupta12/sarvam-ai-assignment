@@ -1,4 +1,4 @@
-import { ConversationNodeData, TransitionType } from "@/modules/types/flow"
+import { CustomNodeData, TransitionType } from "@/modules/types/flow"
 import { Handle } from "reactflow"
 import { PencilLine } from "lucide-react"
 import { Position } from "reactflow"
@@ -6,7 +6,7 @@ import { DeleteTransition } from "./delete-transition"
 import { useState } from "react"
 import useFlowStore from "@/modules/store/flow-store"
 
-export const PromptTransition = ({id, index, transition, data}:{id: string, index: number, transition: TransitionType, data: ConversationNodeData}) => {
+export const PromptTransition = ({id, index, transition, data}:{id: string, index: number, transition: TransitionType, data: CustomNodeData}) => {
     const [isEditing, setIsEditing] = useState(false)
     const updateNodeData = useFlowStore((state) => state.updateNodeData)
     const handleEditPromptTransitionContent = (e: React.ChangeEvent<HTMLInputElement>) => {

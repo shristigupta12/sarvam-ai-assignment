@@ -1,7 +1,7 @@
 import useFlowStore from "@/modules/store/flow-store"
-import { ConversationNodeData } from "@/modules/types/flow"
+import { CustomNodeData } from "@/modules/types/flow"
 
-export const AddPromptTransition = ({id, data}:{id: string, data: ConversationNodeData}) => {
+export const AddPromptTransition = ({id, data}:{id: string, data: CustomNodeData}) => {
     const updateNodeData = useFlowStore((state) => state.updateNodeData)
     const handleAddPromptTransition = () => {
         updateNodeData(id, { transitions: [...data.transitions, { type: "PROMPT", content: "New transition prompt" }] })

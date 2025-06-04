@@ -1,10 +1,15 @@
 import { NodeType } from "@/modules/interfaces/main";
+import useFlowStore from "@/modules/store/flow-store";
 
 export const handleNodeClick = (
   nodeType: NodeType,
-  onAddNode: (type: NodeType, position: { x: number; y: number }) => void
+  createNode: (type: NodeType, position: { x: number; y: number }) => void
 ) => {
-  onAddNode(nodeType, { x: 50, y: 50 });
+  if (nodeType === 'functionNode') {
+    useFlowStore.getState().openFunctionModal( { x: 50, y: 50 });
+  } else {
+    createNode(nodeType, { x: 50, y: 50 });
+  }
 };
 
 export const onDragStart = (event: React.DragEvent, nodeType: NodeType) => {

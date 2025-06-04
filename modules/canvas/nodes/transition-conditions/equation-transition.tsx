@@ -1,4 +1,4 @@
-import { ConversationNodeData, TransitionType } from "@/modules/types/flow"
+import { CustomNodeData, TransitionType } from "@/modules/types/flow"
 import { Handle } from "reactflow"
 import { PencilLine } from "lucide-react"
 import { Position } from "reactflow"
@@ -7,7 +7,7 @@ import { EquationModal } from "./equationModal"
 import { useState } from "react"
 import useFlowStore from "@/modules/store/flow-store"
 
-export const EquationTransition = ({id, index, transition, data}:{id: string, index: number, transition: TransitionType, data: ConversationNodeData}) => {
+export const EquationTransition = ({id, index, transition, data}:{id: string, index: number, transition: TransitionType, data: CustomNodeData}) => {
     const updateNodeData = useFlowStore((state) => state.updateNodeData)
 
     const [isModalOpen, setIsModalOpen] = useState(false);

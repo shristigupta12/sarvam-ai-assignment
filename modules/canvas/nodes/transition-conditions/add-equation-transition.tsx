@@ -1,9 +1,9 @@
 import useFlowStore from "@/modules/store/flow-store"
-import { ConversationNodeData } from "@/modules/types/flow"
+import { CustomNodeData } from "@/modules/types/flow"
 import { useState } from "react";
 import { EquationModal } from "./equationModal";
 
-export const AddEquationTransition = ({id, data}:{id: string, data: ConversationNodeData}) => {
+export const AddEquationTransition = ({id, data}:{id: string, data: CustomNodeData}) => {
     const updateNodeData = useFlowStore((state) => state.updateNodeData)
 
     const [isModalOpen, setIsModalOpen] = useState(false);

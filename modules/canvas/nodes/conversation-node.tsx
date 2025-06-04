@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 import {  NodeProps } from 'reactflow';
-import { NodesWrapper } from '../nodes-wrapper/nodes-wrapper';
+import { NodesWrapper } from './nodes-wrapper/nodes-wrapper';
 import useFlowStore from '@/modules/store/flow-store';
 import { ConversationNodeData } from '@/modules/types/flow';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@radix-ui/react-separator';
-import { TransitionConditions } from './transition-conditions';
+import { TransitionConditions } from './transition-conditions/transition-conditions';
 
 
 interface ConversationNodeProps extends NodeProps<ConversationNodeData> {}

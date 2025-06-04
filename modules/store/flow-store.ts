@@ -23,17 +23,12 @@ import {
   CallTransferNodeData,
   PressDigitNodeData,
   EndCallNodeData,
-  CustomNodeData, // Import the union type
+  CustomNodeData,
 } from '@/modules/types/flow';
 
-
-// export interface CustomEdgeData {
-//   condition?: string;
-// }
-
 interface SelectedElements {
-  nodes: Node<CustomNodeData>[]; 
-  edges: Edge<CustomEdgeData>[]; 
+  nodes: Node<CustomNodeData>[];
+  edges: Edge<CustomEdgeData>[];
 }
 
 interface FlowState {
@@ -50,6 +45,12 @@ interface FlowState {
   duplicateNode: (nodeId: string) => void;
   updateNodeData: (nodeId: string, data: Partial<CustomNodeData>) => void;
   updateEdgeData: (edgeId: string, data: Partial<CustomEdgeData>) => void;
+
+  isFunctionModalOpen: boolean;
+  functionNodePendingPosition: { x: number; y: number } | null;
+  openFunctionModal: (position: { x: number; y: number }) => void;
+  closeFunctionModal: () => void;
+  addFunctionNodeWithSelectedData: (functionName: string, position: { x: number; y: number }) => void;
 }
 
 const useFlowStore = create<FlowState>((set, get) => ({
@@ -57,34 +58,38 @@ const useFlowStore = create<FlowState>((set, get) => ({
   edges: [],
   selectedElements: { nodes: [], edges: [] },
 
+  // New state initialization
+  isFunctionModalOpen: false,
+  functionNodePendingPosition: null,
+
   onNodesChange: (changes: NodeChange[]) => {
     set((state) => {
       const newNodes = applyNodeChanges(changes, state.nodes);
       const newSelectedNodes = state.selectedElements.nodes
         .map(selectedNode => newNodes.find(n => n.id === selectedNode.id))
-        .filter(Boolean) as Node<CustomNodeData>[]; 
+        .filter(Boolean) as Node<CustomNodeData>[];
 
       return {
         nodes: newNodes,
         selectedElements: {
           nodes: newSelectedNodes,
-          edges: state.selectedElements.edges, 
+          edges: state.selectedElements.edges,
         },
       };
     });
   },
-  
+
   onEdgesChange: (changes: EdgeChange[]) => {
     set((state) => {
       const newEdges = applyEdgeChanges(changes, state.edges);
       const newSelectedEdges = state.selectedElements.edges
         .map(selectedEdge => newEdges.find(e => e.id === selectedEdge.id))
-        .filter(Boolean) as Edge<CustomEdgeData>[]; 
+        .filter(Boolean) as Edge<CustomEdgeData>[];
 
       return {
         edges: newEdges,
         selectedElements: {
-          nodes: state.selectedElements.nodes, 
+          nodes: state.selectedElements.nodes,
           edges: newSelectedEdges,
         },
       };
@@ -169,7 +174,6 @@ const useFlowStore = create<FlowState>((set, get) => ({
         selected: true,
       };
 
-      // Update all nodes: deselect the original node and add the duplicated node
       const updatedNodes = state.nodes.map((node) =>
         node.id === nodeId ? { ...node, selected: false } : node
       );
@@ -178,8 +182,8 @@ const useFlowStore = create<FlowState>((set, get) => ({
         ...state,
         nodes: [...updatedNodes, duplicatedNode],
         selectedElements: {
-          nodes: [duplicatedNode], 
-          edges: [], 
+          nodes: [duplicatedNode],
+          edges: [],
         },
       };
     });
@@ -201,7 +205,7 @@ const useFlowStore = create<FlowState>((set, get) => ({
         nodes: newNodes,
         selectedElements: {
           nodes: newSelectedNodes,
-          edges: state.selectedElements.edges, 
+          edges: state.selectedElements.edges,
         },
       };
     });
@@ -223,13 +227,38 @@ const useFlowStore = create<FlowState>((set, get) => ({
       return {
         edges: newEdges,
         selectedElements: {
-          nodes: state.selectedElements.nodes, 
+          nodes: state.selectedElements.nodes,
           edges: newSelectedEdges,
         },
       };
     });
   },
-  
+
+  openFunctionModal: (position: { x: number; y: number }) => {
+    set({ isFunctionModalOpen: true, functionNodePendingPosition: position });
+  },
+
+  closeFunctionModal: () => {
+    set({ isFunctionModalOpen: false, functionNodePendingPosition: null });
+  },
+
+  addFunctionNodeWithSelectedData: (functionName: string, position: { x: number; y: number }) => {
+    const newFunctionNode: Node<FunctionNodeData> = {
+      id: generateUniqueNodeId(),
+      type: 'functionNode',
+      position,
+      data: {
+        title: 'Function',
+        functionName: functionName,
+        waitForResult: false,
+        speakDuringExecution: false,
+        globalNode: false,
+        transitions: [],
+      },
+    };
+    get().addNode(newFunctionNode);
+    get().closeFunctionModal();
+  },
 }));
 
 export default useFlowStore;
