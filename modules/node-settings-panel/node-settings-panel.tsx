@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import useFlowStore from '@/modules/store/flow-store';
 import { Edge, Node } from 'reactflow';
+import { X, Settings } from 'lucide-react';
 import {
   CustomEdgeData,
   ConversationNodeData,
@@ -13,10 +14,17 @@ import {
 } from '@/modules/types/flow';
 
 const NodeSettingsPanel: React.FC = () => {
-    const { selectedElements, updateNodeData, updateEdgeData } = useFlowStore();
+    const { selectedElements, updateNodeData, updateEdgeData, isSettingsPanelOpen, toggleSettingsPanel, openSettingsPanel } = useFlowStore();
 
     const selectedNode: Node<CustomNodeData> | undefined = selectedElements.nodes[0];
     const selectedEdge: Edge<CustomEdgeData> | undefined = selectedElements.edges[0];
+
+    // Auto-open settings panel when something is selected on mobile
+    useEffect(() => {
+      if ((selectedNode || selectedEdge) && window.innerWidth < 640) {
+        openSettingsPanel();
+      }
+    }, [selectedNode, selectedEdge, openSettingsPanel]);
 
     const renderToggle = (label: string, value: boolean, onChange: (checked: boolean) => void) => (
       <div className="flex items-center justify-between mb-3">
@@ -73,7 +81,7 @@ const NodeSettingsPanel: React.FC = () => {
                 const newTransitions = transitions.filter((_, i) => i !== index);
                 updateNodeData(nodeId, { transitions: newTransitions });
               }}
-              className="text-xs text-neutral-500"
+              className="text-xs text-neutral-500 hover:cursor-pointer"
             >
               Remove Transition
             </button>
@@ -84,7 +92,7 @@ const NodeSettingsPanel: React.FC = () => {
             const newTransitions = [...transitions, { type: "PROMPT" as const, content: "" }];
             updateNodeData(nodeId, { transitions: newTransitions });
           }}
-          className="text-sm text-primary-300"
+          className="text-sm text-primary-300 hover:cursor-pointer"
         >
           + Add Transition
         </button>
@@ -216,28 +224,56 @@ const NodeSettingsPanel: React.FC = () => {
     };
 
     return (
-      <aside className="border-l border-neutral-300 bg-white p-4  h-full w-80 overflow-y-auto">
-        <div className="text-lg font-semibold mb-3">Properties</div>
+      <>
+        {/* Mobile Settings Toggle Button */}
+        <button
+          onClick={toggleSettingsPanel}
+          className="fixed bottom-4 right-4 z-30 bg-primary-300 text-white p-3 rounded-full shadow-lg sm:hidden"
+        >
+          <Settings className="w-5 h-5" />
+        </button>
 
-        {!selectedNode && !selectedEdge && (
-          <p className="text-sm text-neutral-500">Select a node or an edge to view its properties.</p>
-        )}
+        {/* Settings Panel */}
+        <aside className={`border-l border-neutral-300 bg-white p-3 sm:p-4 h-full w-full sm:w-80 md:w-96 lg:w-80 xl:w-96 max-w-screen-sm sm:max-w-none overflow-y-auto fixed right-0 top-0 sm:relative transform transition-transform duration-300 ease-in-out z-20 sm:z-auto ${
+          isSettingsPanelOpen ? 'translate-x-0' : 'translate-x-full sm:translate-x-0'
+        }`}>
+          {/* Mobile Close Button */}
+          <button
+            onClick={toggleSettingsPanel}
+            className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-md sm:hidden"
+          >
+            <X className="w-4 h-4" />
+          </button>
 
-        {selectedNode && (
-          <div className="mb-6">
-            <h3 className="text-md font-semibold mb-2">Node: {selectedNode.type} </h3>
-            {renderNodeSettings(selectedNode)}
-          </div>
-        )}
+          <div className="text-base sm:text-lg font-semibold mb-3 pr-12 sm:pr-0">Properties</div>
 
-        {selectedEdge && (
-          <div>
-            <h3 className="text-md font-semibold mb-2">Edge: {selectedEdge.id}</h3>
-            <p className="text-xs text-gray-600 mb-2">From: {selectedEdge.source} to: {selectedEdge.target}</p>
-            {renderEdgeSettings(selectedEdge)}
-          </div>
+          {!selectedNode && !selectedEdge && (
+            <p className="text-sm text-neutral-500">Select a node or an edge to view its properties.</p>
+          )}
+
+          {selectedNode && (
+            <div className="mb-6">
+              {renderNodeSettings(selectedNode)}
+            </div>
+          )}
+
+          {selectedEdge && (
+            <div>
+              <h3 className="text-sm sm:text-md font-semibold mb-2">Edge: {selectedEdge.id}</h3>
+              <p className="text-xs text-gray-600 mb-2">From: {selectedEdge.source} to: {selectedEdge.target}</p>
+              {renderEdgeSettings(selectedEdge)}
+            </div>
+          )}
+        </aside>
+
+        {/* Mobile Overlay */}
+        {isSettingsPanelOpen && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-10 sm:hidden"
+            onClick={toggleSettingsPanel}
+          />
         )}
-      </aside>
+      </>
     );
 };
 

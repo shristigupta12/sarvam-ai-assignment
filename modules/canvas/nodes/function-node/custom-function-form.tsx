@@ -48,48 +48,79 @@ export default function CustomFunctionDialog({ open, onOpenChange, onSave }: Cus
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] overflow-y-auto max-h-[80vh]">
+      <DialogContent className="w-[95vw] max-w-[600px] sm:max-w-[700px] overflow-y-auto max-h-[90vh] p-4 sm:p-6">
         <DialogHeader>
-          <DialogTitle>Custom Function</DialogTitle>
+          <DialogTitle className="text-lg sm:text-xl">Custom Function</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4">
-          <div className="flex flex-col gap-2">
-            <Label>Name</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter the name of the custom function" />
+        <div className="space-y-3 sm:space-y-4">
+          <div className="flex flex-col gap-1.5 sm:gap-2">
+            <Label className="text-sm sm:text-base font-medium">Name</Label>
+            <Input 
+              value={name} 
+              onChange={(e) => setName(e.target.value)} 
+              placeholder="Enter the name of the custom function" 
+              className="text-sm sm:text-base h-9 sm:h-10"
+            />
           </div>
-          <div className="flex flex-col gap-2">
-            <Label>Description</Label>
-            <Input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Enter the description" />
+          <div className="flex flex-col gap-1.5 sm:gap-2">
+            <Label className="text-sm sm:text-base font-medium">Description</Label>
+            <Input 
+              value={description} 
+              onChange={(e) => setDescription(e.target.value)} 
+              placeholder="Enter the description" 
+              className="text-sm sm:text-base h-9 sm:h-10"
+            />
           </div>
-          <div className="flex flex-col gap-2">
-            <Label>Your URL</Label>
-            <Input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="Enter the URL of the function" />
+          <div className="flex flex-col gap-1.5 sm:gap-2">
+            <Label className="text-sm sm:text-base font-medium">Your URL</Label>
+            <Input 
+              value={url} 
+              onChange={(e) => setUrl(e.target.value)} 
+              placeholder="Enter the URL of the function" 
+              className="text-sm sm:text-base h-9 sm:h-10"
+            />
           </div>
-          <div className="flex flex-col gap-2">
-            <Label>API Timeout (Optional)</Label>
+          <div className="flex flex-col gap-1.5 sm:gap-2">
+            <Label className="text-sm sm:text-base font-medium">API Timeout (Optional)</Label>
             <Input
               type="number"
               value={timeout}
               onChange={(e) => setTimeout(e.target.value)}
               placeholder="Enter timeout in ms"
+              className="text-sm sm:text-base h-9 sm:h-10"
             />
           </div>
-          <div className="flex flex-col gap-2">
-            <Label>Parameters (Optional)</Label>
+          <div className="flex flex-col gap-1.5 sm:gap-2">
+            <Label className="text-sm sm:text-base font-medium">Parameters (Optional)</Label>
             <Textarea
-              className="min-h-[150px] font-mono text-sm"
+              className="min-h-[120px] sm:min-h-[150px] font-mono text-xs sm:text-sm resize-none"
               value={jsonSchema}
               onChange={(e) => setJsonSchema(e.target.value)}
               placeholder="Enter JSON Schema here..."
             />
-            <Button onClick={handleFormatJson} variant="outline" className="w-fit hover:cursor-pointer ml-auto">
+            <Button 
+              onClick={handleFormatJson} 
+              variant="outline" 
+              className="w-full sm:w-fit hover:cursor-pointer sm:ml-auto text-sm"
+            >
               Format JSON
             </Button>
           </div>
         </div>
-        <DialogFooter className="mt-4 w-full flex justify-between">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button onClick={handleSave} className="bg-primary-300 hover:bg-primary-300 hover:cursor-pointer">Save</Button>
+        <DialogFooter className="mt-4 w-full flex flex-col-reverse sm:flex-row justify-between gap-2 sm:gap-0">
+          <Button 
+            variant="outline" 
+            onClick={() => onOpenChange(false)}
+            className="w-full sm:w-auto"
+          >
+            Cancel
+          </Button>
+          <Button 
+            onClick={handleSave} 
+            className="bg-primary-300 hover:bg-primary-300 hover:cursor-pointer w-full sm:w-auto"
+          >
+            Save
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

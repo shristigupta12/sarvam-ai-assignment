@@ -33,26 +33,28 @@ const PressDigitNode = ({ id, data }: PressDigitNodeProps) => {
         }}
       />
       <NodesWrapper nodeId={id} nodeType="pressDigitNode" title={data?.title || ''} handleTitleChange={handleTitleChange}>
-          <div className="mb-2">
-            <label className="text-xs text-gray-700 block mb-1">Instructions:</label>
+        <div className="flex flex-col gap-2">
+          <div>
+            <label className="text-xs sm:text-sm text-gray-700 block mb-1 font-medium">Instructions:</label>
             <Textarea 
               onChange={(e) => updateNodeData(id, { instructions: e.target.value })} 
               value={data?.instructions || ""} 
-              placeholder="Enter instructions"
-              className="text-xs min-h-[60px]"
+              placeholder="e.g., Press 1 for Sales, 2 for Support"
+              className="text-xs sm:text-sm min-h-[60px] sm:min-h-[70px] resize-none"
             />
           </div>
-          <div className="mb-2">
-            <label className="text-xs text-gray-700 block mb-1">Pause Delay (ms):</label>
+          <div>
+            <label className="text-xs sm:text-sm text-gray-700 block mb-1 font-medium">Pause Delay (ms):</label>
             <Input 
               type="number"
               onChange={(e) => updateNodeData(id, { pauseDetectionDelay: parseInt(e.target.value) || 0 })} 
               value={data?.pauseDetectionDelay || 0} 
-              placeholder="0"
-              className="text-xs"
+              placeholder="e.g., 2000"
+              className="text-xs sm:text-sm h-8 sm:h-9"
             />
           </div>
           <TransitionConditions id={id} data={data} />
+        </div>
       </NodesWrapper>
     </div>
   );

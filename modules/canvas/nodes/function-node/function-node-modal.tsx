@@ -70,96 +70,96 @@ const FunctionNodeModal: React.FC<FunctionNodeModalProps> = ({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-[50vw] w-fit flex flex-col gap-6 min-w-[500px]">
+        <DialogContent className="w-[95vw] max-w-[600px] sm:max-w-[50vw] flex flex-col gap-4 sm:gap-6 max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Select Function</DialogTitle>
+            <DialogTitle className="text-lg sm:text-xl">Select Function</DialogTitle>
           </DialogHeader>
-            <RadioGroup
-              value={selectedOption}
-              onValueChange={(value: "predefined" | "custom") =>
-                setSelectedOption(value)
-              }
-              className="flex flex-col gap-6"
-            >
-              <div className="flex items-start gap-4 justify-between">
-                <div className="flex items-center gap-3 ">
-                  <RadioGroupItem 
-                    value="predefined" 
-                    id="predefined" 
-                    className="hover:cursor-pointer data-[state=checked]:border-primary-300 data-[state=checked]:text-primary-300 [&[data-state=checked]>span>svg]:fill-primary-300" 
-                    />
-                    <Label htmlFor="predefined" className="text-md text-neutral-600" >Predefined Functions</Label>
-                </div>
+          <RadioGroup
+            value={selectedOption}
+            onValueChange={(value: "predefined" | "custom") =>
+              setSelectedOption(value)
+            }
+            className="flex flex-col gap-4 sm:gap-6"
+          >
+            <div className="flex flex-col sm:flex-row items-start gap-4 sm:justify-between">
+              <div className="flex items-center gap-3">
+                <RadioGroupItem 
+                  value="predefined" 
+                  id="predefined" 
+                  className="hover:cursor-pointer data-[state=checked]:border-primary-300 data-[state=checked]:text-primary-300 [&[data-state=checked]>span>svg]:fill-primary-300" 
+                />
+                <Label htmlFor="predefined" className="text-sm sm:text-md text-neutral-600">Predefined Functions</Label>
+              </div>
 
-                <div className="flex items-center gap-2">
-                  <RadioGroupItem 
-                    value="custom" 
-                    id="custom" 
-                    className="hover:cursor-pointer data-[state=checked]:border-primary-300 data-[state=checked]:text-primary-300 [&[data-state=checked]>span>svg]:fill-primary-300"  
-                    />
-                  <Label htmlFor="custom" className="text-md text-neutral-600">Custom Function</Label>
+              <div className="flex items-center gap-3">
+                <RadioGroupItem 
+                  value="custom" 
+                  id="custom" 
+                  className="hover:cursor-pointer data-[state=checked]:border-primary-300 data-[state=checked]:text-primary-300 [&[data-state=checked]>span>svg]:fill-primary-300"  
+                />
+                <Label htmlFor="custom" className="text-sm sm:text-md text-neutral-600">Custom Function</Label>
+              </div>
+            </div>
+            {selectedOption === "predefined" && (
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-col border rounded-md">
+                  <input
+                    type="radio"
+                    id="fetch_user_details"
+                    value="fetch_user_details"
+                    checked={
+                      selectedOption === "predefined" &&
+                      predefinedFunction === "fetch_user_details"
+                    }
+                    onChange={() => {
+                      setSelectedOption("predefined");
+                      setPredefinedFunction("fetch_user_details");
+                    }}
+                    className="peer hidden"
+                  />
+                  <Label
+                    htmlFor="fetch_user_details"
+                    className={`flex cursor-pointer items-center rounded-md bg-popover p-3 sm:p-4 hover:bg-neutral-50 hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary ${predefinedFunction==="fetch_user_details" ? "text-neutral-800 bg-neutral-100" : "text-neutral-600 bg-none" } font-semibold text-sm sm:text-md`}
+                  >
+                    <UserSearch className="w-4 h-4 mr-2" /> Fetch User Details
+                  </Label>
+                </div>
+                <div className="flex items-center border rounded-md">
+                  <input
+                    type="radio"
+                    id="send_otp"
+                    value="send_otp"
+                    checked={
+                      selectedOption === "predefined" &&
+                      predefinedFunction === "send_otp"
+                    }
+                    onChange={() => {
+                      setSelectedOption("predefined");
+                      setPredefinedFunction("send_otp");
+                    }}
+                    className="peer hidden"
+                  />
+                  <Label
+                    htmlFor="send_otp"
+                    className={`flex cursor-pointer items-center rounded-md bg-popover p-3 sm:p-4 hover:bg-neutral-50 hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary w-full font-semibold text-sm sm:text-md ${predefinedFunction==="send_otp" ? "text-neutral-800 bg-neutral-100" : "text-neutral-600 bg-none" }`}
+                  >
+                    <MessageCircleMore className="w-4 h-4 mr-2" /> Send OTP
+                  </Label>
                 </div>
               </div>
-              {selectedOption === "predefined" && (
-                <div className="flex flex-col gap-2 ">
-                  <div className="flex flex-col border rounded-md">
-                    <input
-                      type="radio"
-                      id="fetch_user_details"
-                      value="fetch_user_details"
-                      checked={
-                        selectedOption === "predefined" &&
-                        predefinedFunction === "fetch_user_details"
-                      }
-                      onChange={() => {
-                        setSelectedOption("predefined");
-                        setPredefinedFunction("fetch_user_details");
-                      }}
-                      className="peer hidden"
-                    />
-                    <Label
-                      htmlFor="fetch_user_details"
-                      className={`flex cursor-pointer items-center rounded-md bg-popover p-4 hover:bg-neutral-50 hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary ${predefinedFunction==="fetch_user_details" ? "text-neutral-800 bg-neutral-100" : "text-neutral-600 bg-none" } font-semibold text-md`}
-                    >
-                      <UserSearch className="w-4 h-4 mr-1" /> Fetch User Details
-                    </Label>
-                  </div>
-                  <div className="flex items-center border rounded-md">
-                    <input
-                      type="radio"
-                      id="send_otp"
-                      value="send_otp"
-                      checked={
-                        selectedOption === "predefined" &&
-                        predefinedFunction === "send_otp"
-                      }
-                      onChange={() => {
-                        setSelectedOption("predefined");
-                        setPredefinedFunction("send_otp");
-                      }}
-                      className="peer hidden"
-                    />
-                    <Label
-                      htmlFor="send_otp"
-                      className={`flex cursor-pointer items-center rounded-md bg-popover p-4 hover:bg-neutral-50 hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary w-full font-semibold text-md ${predefinedFunction==="send_otp" ? "text-neutral-800 bg-neutral-100" : "text-neutral-600 bg-none" }`}
-                    >
-                      <MessageCircleMore className="w-4 h-4 mr-1" /> Send OTP
-                    </Label>
-                  </div>
-                </div>
-                )}
-            </RadioGroup>
-          <DialogFooter className="flex justify-between w-full items-center ">
+            )}
+          </RadioGroup>
+          <DialogFooter className="flex flex-col-reverse sm:flex-row justify-between w-full items-center gap-2 sm:gap-0">
             <Button
               variant="outline"
               onClick={onClose}
-              className="hover:cursor-pointer"
+              className="hover:cursor-pointer w-full sm:w-auto"
             >
               Cancel
             </Button>
             <Button
               onClick={handleAddFunction}
-              className="bg-primary-300 hover:bg-primary-300 hover:cursor-pointer"
+              className="bg-primary-300 hover:bg-primary-300 hover:cursor-pointer w-full sm:w-auto"
             >
               Add
             </Button>

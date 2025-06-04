@@ -47,6 +47,11 @@ interface FlowState {
   openFunctionModal: (position: { x: number; y: number }) => void;
   closeFunctionModal: () => void;
   addFunctionNodeWithSelectedData: (functionName: string, position: { x: number; y: number }) => void;
+  
+  isSettingsPanelOpen: boolean;
+  toggleSettingsPanel: () => void;
+  openSettingsPanel: () => void;
+  closeSettingsPanel: () => void;
 }
 
 const useFlowStore = create<FlowState>((set, get) => ({
@@ -57,6 +62,7 @@ const useFlowStore = create<FlowState>((set, get) => ({
   // New state initialization
   isFunctionModalOpen: false,
   functionNodePendingPosition: null,
+  isSettingsPanelOpen: false,
 
   onNodesChange: (changes: NodeChange[]) => {
     set((state) => {
@@ -251,6 +257,18 @@ const useFlowStore = create<FlowState>((set, get) => ({
     };
     get().addNode(newFunctionNode);
     get().closeFunctionModal();
+  },
+
+  toggleSettingsPanel: () => {
+    set((state) => ({ isSettingsPanelOpen: !state.isSettingsPanelOpen }));
+  },
+
+  openSettingsPanel: () => {
+    set({ isSettingsPanelOpen: true });
+  },
+
+  closeSettingsPanel: () => {
+    set({ isSettingsPanelOpen: false });
   },
 }));
 

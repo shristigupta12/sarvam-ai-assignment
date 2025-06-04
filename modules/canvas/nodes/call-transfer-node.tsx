@@ -31,16 +31,18 @@ const CallTransferNode = ({ id, data }: CallTransferNodeProps) => {
         }}
       />
       <NodesWrapper nodeId={id} nodeType="callTransferNode" title={data?.title || ''} handleTitleChange={handleTitleChange}>
-        <div className="mb-2">
-          <label className="text-xs text-gray-700 block mb-1">Phone Number:</label>
-          <Input 
-            onChange={(e) => updateNodeData(id, { phoneNumber: e.target.value })} 
-            value={data?.phoneNumber || ""} 
-            placeholder="Enter phone number"
-            className="text-xs"
-          />
+        <div className="flex flex-col gap-2">
+          <div>
+            <label className="text-xs sm:text-sm text-gray-700 block mb-1 font-medium">Phone Number:</label>
+            <Input 
+              onChange={(e) => updateNodeData(id, { phoneNumber: e.target.value })} 
+              value={data?.phoneNumber || ""} 
+              placeholder="e.g., +1234567890"
+              className="text-xs sm:text-sm h-8 sm:h-9"
+            />
+          </div>
+          <TransitionConditions id={id} data={data} />
         </div>
-        <TransitionConditions id={id} data={data} />
       </NodesWrapper>
     </div>
   );

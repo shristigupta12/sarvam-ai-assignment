@@ -111,46 +111,51 @@ const FlowCanvas = () => {
         }
       `}</style>
       
-      <div className="flex h-screen bg-neutral-50">
+      <div className="flex h-screen bg-neutral-50 relative">
         <NodeSidebar />
 
-      <div className="flex-grow h-full " ref={reactFlowWrapper}>
-        <ReactFlow
-          nodes={nodes as FlowNode<CustomNodeData>[]}
-          edges={edges as Edge<CustomEdgeData>[]}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          onEdgesDelete={onEdgesDelete}
-          onSelectionChange={onSelectionChange}
-          nodeTypes={nodeTypes}
-          edgeTypes={edgeTypes}
-          defaultEdgeOptions={defaultEdgeOptions}
-          connectionLineStyle={{
-            stroke: '#6b7280',
-            strokeWidth: 2,
-            strokeDasharray: '8,4',
-          }}
-          connectionLineType={ConnectionLineType.SmoothStep}
-          selectNodesOnDrag={false}
-          panOnDrag={true}
-          fitView
-          onDrop={onDrop}
-          onDragOver={onDragOver}
-        >
-          <Background />
-          <Controls />
-        </ReactFlow>
-      </div>
-      <NodeSettingsPanel />
+        <div className="flex-1 h-full min-w-0" ref={reactFlowWrapper}>
+          <ReactFlow
+            nodes={nodes as FlowNode<CustomNodeData>[]}
+            edges={edges as Edge<CustomEdgeData>[]}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            onEdgesDelete={onEdgesDelete}
+            onSelectionChange={onSelectionChange}
+            nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
+            defaultEdgeOptions={defaultEdgeOptions}
+            connectionLineStyle={{
+              stroke: '#6b7280',
+              strokeWidth: 2,
+              strokeDasharray: '8,4',
+            }}
+            connectionLineType={ConnectionLineType.SmoothStep}
+            selectNodesOnDrag={false}
+            panOnDrag={true}
+            fitView
+            onDrop={onDrop}
+            onDragOver={onDragOver}
+          >
+            <Background />
+            <Controls 
+              className="[&>button]:text-xs [&>button]:sm:text-sm [&>button]:p-1 [&>button]:sm:p-2"
+              showZoom={true}
+              showFitView={true}
+              showInteractive={false}
+            />
+          </ReactFlow>
+        </div>
+        <NodeSettingsPanel />
 
-      {isFunctionModalOpen && (
-        <FunctionNodeModal
-          isOpen={isFunctionModalOpen}
-          onClose={useFlowStore.getState().closeFunctionModal} 
-          onSelectFunction={handleFunctionSelect}
-        />
-      )}
+        {isFunctionModalOpen && (
+          <FunctionNodeModal
+            isOpen={isFunctionModalOpen}
+            onClose={useFlowStore.getState().closeFunctionModal} 
+            onSelectFunction={handleFunctionSelect}
+          />
+        )}
       </div>
     </>
   );

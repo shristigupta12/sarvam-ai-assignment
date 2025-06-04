@@ -8,14 +8,21 @@ export const SidebarComponent = ({nodeType, children, name}: {nodeType: NodeType
   const {createNode} = useCreateNode()
   return(
     <div
-        className={`flex gap-3 w-full items-center cursor-grab active:cursor-grabbing hover:bg-neutral-100 rounded-md p-1 ${isOpen ? "justify-start" : "justify-center"}`}
+        className={`flex gap-2 sm:gap-3 w-full items-center cursor-grab active:cursor-grabbing hover:bg-neutral-100 rounded-md p-1.5 sm:p-2 transition-colors ${isOpen ? "justify-start" : "justify-center"}`}
         onDragStart={(event) => onDragStart(event, nodeType)}
         draggable
         onClick={() =>
           handleNodeClick(nodeType, createNode )
         }
       >
-        {children} {isOpen && name}
+        <div className="flex-shrink-0">
+          {children}
+        </div>
+        {isOpen && (
+          <span className="text-xs sm:text-sm font-medium text-neutral-700 truncate">
+            {name}
+          </span>
+        )}
       </div>
   )
 }

@@ -31,16 +31,18 @@ const FunctionNode = ({ id, data }: FunctionNodeProps) => {
         }}
       />
       <NodesWrapper nodeId={id} nodeType="functionNode" title={data?.title || ''} handleTitleChange={handleTitleChange}>
-        <div className="mb-2">
-          <label className="text-xs text-gray-700 block mb-1">Function Name:</label>
-          <Input 
-            onChange={(e) => updateNodeData(id, { functionName: e.target.value })} 
-            value={data?.functionName || ""} 
-            placeholder="Enter function name"
-            className="text-xs"
-          />
+        <div className="flex flex-col gap-2">
+          <div>
+            <label className="text-xs sm:text-sm text-gray-700 block mb-1 font-medium">Function Name:</label>
+            <Input 
+              onChange={(e) => updateNodeData(id, { functionName: e.target.value })} 
+              value={data?.functionName || ""} 
+              placeholder="e.g., check_calendar_availability"
+              className="text-xs sm:text-sm h-8 sm:h-9"
+            />
+          </div>
+          <TransitionConditions id={id} data={data} />
         </div>
-        <TransitionConditions id={id} data={data} />
       </NodesWrapper>
     </div>
   );
