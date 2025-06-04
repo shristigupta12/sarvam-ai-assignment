@@ -4,6 +4,7 @@ import { NodesWrapper } from '../nodes-wrapper/nodes-wrapper';
 import useFlowStore from '@/modules/store/flow-store';
 import { TransitionConditions } from '../transition-conditions/transition-conditions';
 import { FunctionNodeData } from '@/modules/types/flow';
+import { Input } from '@/components/ui/input';
 
 interface FunctionNodeProps extends NodeProps<FunctionNodeData> {}
 
@@ -17,7 +18,15 @@ const FunctionNode = ({ id, data }: FunctionNodeProps) => {
   
   return (
     <NodesWrapper nodeId={id} nodeType="functionNode" title={data?.title || 'Function'} handleTitleChange={handleTitleChange}>
-      <div className="text-xs text-gray-700">Function: {data?.functionName || 'No function name'}</div>
+      <div className="mb-2">
+        <label className="text-xs text-gray-700 block mb-1">Function Name:</label>
+        <Input 
+          onChange={(e) => updateNodeData(id, { functionName: e.target.value })} 
+          value={data?.functionName || ""} 
+          placeholder="Enter function name"
+          className="text-xs"
+        />
+      </div>
       <TransitionConditions id={id} data={data} />
 
       <Handle type="target" position={Position.Top}  />

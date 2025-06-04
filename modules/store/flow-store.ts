@@ -18,11 +18,7 @@ import {
 
 import {
   CustomEdgeData,
-  ConversationNodeData,
   FunctionNodeData,
-  CallTransferNodeData,
-  PressDigitNodeData,
-  EndCallNodeData,
   CustomNodeData,
 } from '@/modules/types/flow';
 
@@ -250,9 +246,6 @@ const useFlowStore = create<FlowState>((set, get) => ({
       data: {
         title: 'Function',
         functionName: functionName,
-        waitForResult: false,
-        speakDuringExecution: false,
-        globalNode: false,
         transitions: [],
       },
     };

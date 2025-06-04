@@ -5,6 +5,8 @@ import useFlowStore from '@/modules/store/flow-store';
 import { NodesWrapper } from './nodes-wrapper/nodes-wrapper';
 import { TransitionConditions } from './transition-conditions/transition-conditions';
 import { PressDigitNodeData } from '@/modules/types/flow';
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 
 interface PressDigitNodeProps extends NodeProps<PressDigitNodeData> {}
 
@@ -18,9 +20,25 @@ const PressDigitNode = ({ id, data }: PressDigitNodeProps) => {
 
   return (
     <NodesWrapper nodeId={id} nodeType="pressDigitNode" title={data?.title || 'Press Digit'} handleTitleChange={handleTitleChange}>
-        
-        <div className="text-xs text-gray-700">Instructions: {data?.instructions || 'No instructions'}</div>
-        <div className="text-xs text-gray-700">Pause Delay: {data?.pauseDetectionDelay || 0}ms</div>
+        <div className="mb-2">
+          <label className="text-xs text-gray-700 block mb-1">Instructions:</label>
+          <Textarea 
+            onChange={(e) => updateNodeData(id, { instructions: e.target.value })} 
+            value={data?.instructions || ""} 
+            placeholder="Enter instructions"
+            className="text-xs min-h-[60px]"
+          />
+        </div>
+        <div className="mb-2">
+          <label className="text-xs text-gray-700 block mb-1">Pause Delay (ms):</label>
+          <Input 
+            type="number"
+            onChange={(e) => updateNodeData(id, { pauseDetectionDelay: parseInt(e.target.value) || 0 })} 
+            value={data?.pauseDetectionDelay || 0} 
+            placeholder="0"
+            className="text-xs"
+          />
+        </div>
         <TransitionConditions id={id} data={data} />
         <Handle type="target" position={Position.Top} />
         <Handle type="source" position={Position.Bottom} />

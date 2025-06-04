@@ -4,6 +4,7 @@ import { NodesWrapper } from './nodes-wrapper/nodes-wrapper';
 import useFlowStore from '@/modules/store/flow-store';
 import { CallTransferNodeData } from '@/modules/types/flow';
 import { TransitionConditions } from './transition-conditions/transition-conditions'; 
+import { Input } from '@/components/ui/input';
 
 interface CallTransferNodeProps extends NodeProps<CallTransferNodeData> {}
 
@@ -17,7 +18,15 @@ const CallTransferNode = ({ id, data }: CallTransferNodeProps) => {
 
   return (
     <NodesWrapper nodeId={id} nodeType="callTransferNode" title={data?.title || 'Call Transfer'} handleTitleChange={handleTitleChange}>
-      <div className="text-xs text-gray-700">Phone: {data?.phoneNumber || 'No phone number set'}</div>
+      <div className="mb-2">
+        <label className="text-xs text-gray-700 block mb-1">Phone Number:</label>
+        <Input 
+          onChange={(e) => updateNodeData(id, { phoneNumber: e.target.value })} 
+          value={data?.phoneNumber || ""} 
+          placeholder="Enter phone number"
+          className="text-xs"
+        />
+      </div>
       <TransitionConditions id={id} data={data} />
       <Handle type="target" position={Position.Top}  />
       <Handle type="source" position={Position.Bottom}  />

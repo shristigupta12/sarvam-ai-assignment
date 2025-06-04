@@ -14,10 +14,10 @@ export const useCreateNode = () => {
       id: generateUniqueNodeId(),
       type,
       position,
-      data: {title: ""},
+      data: {title: "", transitions: []},
     };
 
-    let initialData: CustomNodeData = {title: ""};
+    let initialData: CustomNodeData = {title: "", transitions: []};
     
     switch (type) {
       case 'conversationNode':
@@ -26,19 +26,19 @@ export const useCreateNode = () => {
         ] } as ConversationNodeData;
         break;
       case 'functionNode':
-        initialData = { functionName: 'newFunction', title: "Function", waitForResult: false, speakDuringExecution: false, globalNode: false } as FunctionNodeData;
+        initialData = { functionName: 'newFunction', title: "Function", transitions: [] } as FunctionNodeData;
         break;
       case 'callTransferNode':
-        initialData = { phoneNumber: '+1XXXXXXXXXX', title: "Call Transfer" } as CallTransferNodeData;
+        initialData = { phoneNumber: '+1XXXXXXXXXX', title: "Call Transfer", transitions: [] } as CallTransferNodeData;
         break;
       case 'pressDigitNode':
-        initialData = { instructions: 'Press...', pauseDetectionDelay: 1000, title: "Press Digit" } as PressDigitNodeData;
+        initialData = { instructions: 'Press...', pauseDetectionDelay: 1000, title: "Press Digit", transitions: [] } as PressDigitNodeData;
         break;
       case 'endCallNode':
-        initialData = { title: "End Call" } as EndCallNodeData;
+        initialData = { title: "End Call", transitions: [] } as EndCallNodeData;
         break;
       default:
-        initialData = {title: ""};
+        initialData = {title: "", transitions: []};
         break;
     }
     
