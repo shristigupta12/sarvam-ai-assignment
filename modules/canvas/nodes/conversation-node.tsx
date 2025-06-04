@@ -33,7 +33,7 @@ const ConversationNode = ({ id, data }: ConversationNodeProps) => {
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}
       />
-      <NodesWrapper nodeId={id} nodeType="conversationNode" title={data?.title || 'Conversation'} handleTitleChange={handleTitleChange}>
+      <NodesWrapper nodeId={id} nodeType="conversationNode" title={data?.title || ''} handleTitleChange={handleTitleChange}>
       <div className='flex flex-col'>
         <Tabs defaultValue="prompt" className="w-full " onValueChange={(prompt)=> updateNodeData(id, { promptMode: prompt === "prompt " ? true : false })}>
           <TabsList className='w-full bg-white'>

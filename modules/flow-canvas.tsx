@@ -114,7 +114,7 @@ const FlowCanvas = () => {
       <div className="flex h-screen bg-primary-50">
         <NodeSidebar />
 
-      <div className="flex-grow h-full bg-primary-50" ref={reactFlowWrapper}>
+      <div className="flex-grow h-full bg-gradient-to-r from-primary-50 to-white " ref={reactFlowWrapper}>
         <ReactFlow
           nodes={nodes as FlowNode<CustomNodeData>[]}
           edges={edges as Edge<CustomEdgeData>[]}

@@ -30,7 +30,7 @@ const FunctionNode = ({ id, data }: FunctionNodeProps) => {
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}
       />
-      <NodesWrapper nodeId={id} nodeType="functionNode" title={data?.title || 'Function'} handleTitleChange={handleTitleChange}>
+      <NodesWrapper nodeId={id} nodeType="functionNode" title={data?.title || ''} handleTitleChange={handleTitleChange}>
         <div className="mb-2">
           <label className="text-xs text-gray-700 block mb-1">Function Name:</label>
           <Input 

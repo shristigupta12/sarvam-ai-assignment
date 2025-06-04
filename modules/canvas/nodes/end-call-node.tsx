@@ -16,7 +16,7 @@ const EndCallNode = ({ id, data }: EndCallNodeProps) => {
   }
 
   return (
-    <NodesWrapper nodeId={id} nodeType="endCallNode" title={data?.title || 'End Call'} handleTitleChange={handleTitleChange}>
+    <NodesWrapper nodeId={id} nodeType="endCallNode" title={data?.title || ''} handleTitleChange={handleTitleChange}>
       <Handle type="target" position={Position.Top} />
     </NodesWrapper>
   );

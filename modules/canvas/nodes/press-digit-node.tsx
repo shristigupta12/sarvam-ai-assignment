@@ -32,7 +32,7 @@ const PressDigitNode = ({ id, data }: PressDigitNodeProps) => {
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}
       />
-      <NodesWrapper nodeId={id} nodeType="pressDigitNode" title={data?.title || 'Press Digit'} handleTitleChange={handleTitleChange}>
+      <NodesWrapper nodeId={id} nodeType="pressDigitNode" title={data?.title || ''} handleTitleChange={handleTitleChange}>
           <div className="mb-2">
             <label className="text-xs text-gray-700 block mb-1">Instructions:</label>
             <Textarea 
