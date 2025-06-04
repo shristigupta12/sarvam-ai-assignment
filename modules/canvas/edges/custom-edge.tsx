@@ -1,13 +1,14 @@
-import React, {memo} from 'react';
+import React, {memo, useState} from 'react';
 import {
     BaseEdge,
     EdgeLabelRenderer,
-    getBezierPath,
+    getSmoothStepPath,
     EdgeProps,
     Edge as ReactFlowEdge
 } from 'reactflow';
 import useFlowStore from '@/modules/store/flow-store';
 import { CustomEdgeData } from '@/modules/types/flow';
+import { X } from 'lucide-react';
 
 const CustomEdge: React.FC<EdgeProps<CustomEdgeData>> = ({
     id,
@@ -20,64 +21,92 @@ const CustomEdge: React.FC<EdgeProps<CustomEdgeData>> = ({
     style = {},
     markerEnd,
     data,
-    selected
+    selected,
+    source,
+    target
 }) => {
-    const [edgePath, labelX, labelY] = getBezierPath({
+    const [isHovered, setIsHovered] = useState(false);
+    
+    const [edgePath, labelX, labelY] = getSmoothStepPath({
         sourceX,
         sourceY,
         targetX,
         targetY,
         sourcePosition,
-        targetPosition
+        targetPosition,
     })
     
     const onEdgesDelete = useFlowStore((state)=>state.onEdgesDelete);
 
-    const handleLabelClick = (event: React.MouseEvent) => {
-        event.stopPropagation();
-        alert(`Editing condition for edge ID: ${id}\nCurrent: "${data?.condition || ''}"\n(This will open a panel soon)`);
-    }
-
     const handleDeleteClick = (event: React.MouseEvent) => {
         event.stopPropagation(); 
-        const edgeToDelete: ReactFlowEdge = { id, source: '', target: '' }; 
+        const edgeToDelete: ReactFlowEdge = { 
+            id, 
+            source: source || '', 
+            target: target || '',
+            sourceHandle: null,
+            targetHandle: null
+        }; 
         onEdgesDelete([edgeToDelete]); 
     };
     
+    const handleEdgeMouseEnter = () => {
+        setIsHovered(true);
+    };
+
+    const handleEdgeMouseLeave = () => {
+        setIsHovered(false);
+    };
+
+    const handleButtonMouseEnter = () => {
+        setIsHovered(true);
+    };
+
+    // Show delete button if edge is hovered OR selected
+    const showDeleteButton = isHovered || selected;
 
   return (
-    <>
-      <BaseEdge path={edgePath} markerEnd={markerEnd} style={style} />
-      <EdgeLabelRenderer>
-        <div
-          style={{
-            position: 'absolute',
-            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
-            pointerEvents: 'all',
-            background: 'white',
-            padding: '4px 8px',
-            borderRadius: '4px',
-            fontSize: '10px',
-            fontWeight: selected ? 'bold' : 'normal', 
-            border: selected ? '1px solid #1a192b' : '1px solid #ccc',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-            cursor: 'pointer',
-          }}
-          className="nodrag nopan" 
-          onClick={handleLabelClick}
-        >
-          {data?.condition || 'Add Condition'}
-          {selected && (
+    <g>
+      <BaseEdge 
+        path={edgePath} 
+        markerEnd={markerEnd} 
+        style={style}
+      />
+      
+      {/* Invisible hover area */}
+      <path
+        d={edgePath}
+        fill="none"
+        stroke="transparent"
+        strokeWidth="20"
+        onMouseEnter={handleEdgeMouseEnter}
+        onMouseLeave={handleEdgeMouseLeave}
+        style={{ cursor: 'pointer' }}
+      />
+      
+      {showDeleteButton && (
+        <EdgeLabelRenderer>
+          <div
+            style={{
+              position: 'absolute',
+              transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+              pointerEvents: 'all',
+            }}
+            className="nodrag nopan"
+            onMouseEnter={handleButtonMouseEnter}
+            onMouseLeave={handleEdgeMouseLeave}
+          >
             <button
               onClick={handleDeleteClick}
-              className="ml-2 px-1 py-0.5 rounded bg-red-500 text-white text-xs hover:bg-red-600"
+              className="w-6 h-6 rounded-full bg-red-500 text-white hover:bg-red-600 flex items-center justify-center shadow-lg border border-white"
+              title="Delete edge"
             >
-              x
+              <X size={12} />
             </button>
-          )}
-        </div>
-      </EdgeLabelRenderer>
-    </>
+          </div>
+        </EdgeLabelRenderer>
+      )}
+    </g>
   );
 };
 

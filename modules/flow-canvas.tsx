@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useRef } from 'react';
-import ReactFlow, { ReactFlowProvider, Background, Controls, useReactFlow, Node as FlowNode, Edge, DefaultEdgeOptions } from 'reactflow';
+import ReactFlow, { ReactFlowProvider, Background, Controls, useReactFlow, Node as FlowNode, Edge, DefaultEdgeOptions, ConnectionLineType } from 'reactflow';
 import 'reactflow/dist/style.css';
 import useFlowStore from '@/modules/store/flow-store';
 import { CallTransferNode, ConversationNode, EndCallNode, FunctionNode, PressDigitNode } from './canvas/nodes';
@@ -41,12 +41,12 @@ const FlowCanvas = () => {
     onConnect,
     onEdgesDelete,
     onSelectionChange,
-    isFunctionModalOpen, // Get modal state
-    functionNodePendingPosition, // Get pending position
-    openFunctionModal, // Get open modal action
-    addFunctionNodeWithSelectedData, // Get action to add function node with data
+    isFunctionModalOpen, 
+    functionNodePendingPosition,
+    openFunctionModal, 
+    addFunctionNodeWithSelectedData,
   } = useFlowStore();
-  const { createNode } = useCreateNode(); // Keep createNode for other types
+  const { createNode } = useCreateNode(); 
 
   const onDragOver = useCallback((event: React.DragEvent) => {
     event?.preventDefault();
@@ -84,13 +84,35 @@ const FlowCanvas = () => {
     if (functionNodePendingPosition) {
       addFunctionNodeWithSelectedData(functionName, functionNodePendingPosition);
     }
-    // No need to close modal here, addFunctionNodeWithSelectedData handles it
   };
 
 
   return (
-    <div className="flex h-screen bg-primary-50">
-      <NodeSidebar />
+    <>
+      <style jsx global>{`
+        @keyframes dashAnimation {
+          from {
+            stroke-dashoffset: 0;
+          }
+          to {
+            stroke-dashoffset: -20;
+          }
+        }
+        
+        .react-flow__connection-line {
+          animation: dashAnimation 0.5s linear infinite;
+        }
+        
+        .react-flow__edge path {
+          stroke: #6b7280;
+          stroke-width: 2;
+          stroke-dasharray: 8,4;
+          animation: dashAnimation 1s linear infinite;
+        }
+      `}</style>
+      
+      <div className="flex h-screen bg-primary-50">
+        <NodeSidebar />
 
       <div className="flex-grow h-full bg-primary-50" ref={reactFlowWrapper}>
         <ReactFlow
@@ -104,6 +126,14 @@ const FlowCanvas = () => {
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
           defaultEdgeOptions={defaultEdgeOptions}
+          connectionLineStyle={{
+            stroke: '#6b7280',
+            strokeWidth: 2,
+            strokeDasharray: '8,4',
+          }}
+          connectionLineType={ConnectionLineType.SmoothStep}
+          selectNodesOnDrag={false}
+          panOnDrag={true}
           fitView
           onDrop={onDrop}
           onDragOver={onDragOver}
@@ -114,15 +144,15 @@ const FlowCanvas = () => {
       </div>
       <NodeSettingsPanel />
 
-      {/* Render the FunctionNodeModal */}
       {isFunctionModalOpen && (
         <FunctionNodeModal
           isOpen={isFunctionModalOpen}
-          onClose={useFlowStore.getState().closeFunctionModal} // Direct call to close
+          onClose={useFlowStore.getState().closeFunctionModal} 
           onSelectFunction={handleFunctionSelect}
         />
       )}
-    </div>
+      </div>
+    </>
   );
 };
 

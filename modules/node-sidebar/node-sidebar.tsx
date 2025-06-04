@@ -27,7 +27,7 @@ const NodeSidebar: React.FC = () => {
       </div>
       {isOpen && (
       <div className="flex flex-col px-4 ">
-        <div className="text-sm font-semibold text-neutral-700">Add New Node</div>
+        <div className="text-md font-semibold text-neutral-700">Add New Node</div>
         <p className="text-xs text-neutral-400 ">  Click or drag </p>
       </div>
       )}

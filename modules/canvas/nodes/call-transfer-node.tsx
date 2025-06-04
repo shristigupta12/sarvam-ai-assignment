@@ -18,7 +18,18 @@ const CallTransferNode = ({ id, data }: CallTransferNodeProps) => {
 
   return (
     <div className="relative">
-      <Handle type="target" position={Position.Top} />
+      <Handle 
+        type="target" 
+        position={Position.Top} 
+        style={{
+          width: '12px',
+          height: '12px',
+          borderRadius: '50%',
+          backgroundColor: 'transparent',
+          border: '1px solid #6b7280',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+        }}
+      />
       <NodesWrapper nodeId={id} nodeType="callTransferNode" title={data?.title || 'Call Transfer'} handleTitleChange={handleTitleChange}>
         <div className="mb-2">
           <label className="text-xs text-gray-700 block mb-1">Phone Number:</label>

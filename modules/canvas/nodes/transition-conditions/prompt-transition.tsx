@@ -46,7 +46,17 @@ export const PromptTransition = ({id, index, transition, data}:{id: string, inde
                 type="source" 
                 position={Position.Right} 
                 id={`prompt-${index}`}
-                style={{ right: -8, top: '50%', transform: 'translateY(-50%)' }}
+                style={{ 
+                    right: -8, 
+                    top: '50%', 
+                    transform: 'translateY(-50%)',
+                    width: '12px',
+                    height: '12px',
+                    borderRadius: '50%',
+                    backgroundColor: 'transparent',
+                    border: '1px solid #6b7280',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                }}
             />
         </div>
     )
