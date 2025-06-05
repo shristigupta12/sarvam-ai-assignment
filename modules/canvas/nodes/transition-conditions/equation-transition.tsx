@@ -18,7 +18,15 @@ export const EquationTransition = ({id, index, transition, data}:{id: string, in
     };
 
     const handleConditionsSave = (conditionString: string) => {
-        updateNodeData(id, { transitions: data.transitions.map((t, i) => i === index ? { ...t, content: conditionString } : t) })
+        if ('transitions' in data && Array.isArray(data.transitions)) {
+            updateNodeData(id, { 
+                transitions: data.transitions.map((t: TransitionType, i: number) => 
+                    i === index ? { ...t, content: conditionString } : t
+                ) 
+            });
+        } else {
+            console.warn(`Node with ID ${id} does not support transitions or transitions are not an array.`);
+        }
         setIsModalOpen(false);
       };
     return (

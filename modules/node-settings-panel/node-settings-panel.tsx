@@ -20,28 +20,13 @@ const NodeSettingsPanel: React.FC = () => {
     const selectedNode: Node<CustomNodeData> | undefined = selectedElements.nodes[0];
     const selectedEdge: Edge<CustomEdgeData> | undefined = selectedElements.edges[0];
 
-    // Auto-open settings panel when something is selected on mobile
     useEffect(() => {
       if ((selectedNode || selectedEdge) && window.innerWidth < 640) {
         openSettingsPanel();
       }
     }, [selectedNode, selectedEdge, openSettingsPanel]);
 
-    const renderToggle = (label: string, value: boolean, onChange: (checked: boolean) => void) => (
-      <div className="flex items-center justify-between mb-3">
-        <label htmlFor={`toggle-${label}`} className="text-sm font-medium text-gray-700">{label}:</label>
-        <label className="relative inline-flex items-center cursor-pointer">
-          <input
-            type="checkbox"
-            id={`toggle-${label}`}
-            className="sr-only peer"
-            checked={value}
-            onChange={(e) => onChange(e.target.checked)}
-          />
-          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-        </label>
-      </div>
-    );
+   
 
     const renderTransitionsEditor = (transitions: TransitionType[], nodeId: string) => (
       <div className="mb-4">

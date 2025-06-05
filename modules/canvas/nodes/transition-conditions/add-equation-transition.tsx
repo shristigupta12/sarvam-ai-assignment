@@ -9,7 +9,7 @@ export const AddEquationTransition = ({id, data, setDropdownShouldClose}:{id: st
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Notify parent when modal state changes
+    
     useEffect(() => {
         if (setDropdownShouldClose) {
             setDropdownShouldClose(!isModalOpen);
@@ -21,7 +21,13 @@ export const AddEquationTransition = ({id, data, setDropdownShouldClose}:{id: st
     };
 
     const handleConditionsSave = (conditionString: string) => {
-        updateNodeData(id, { transitions: [...data.transitions, { type: "EQUATION", content: conditionString }] })
+        if ('transitions' in data) {
+          
+            updateNodeData(id, { transitions: [...data.transitions, { type: "EQUATION", content: conditionString }] });
+        } else {
+          
+            console.warn(`Node with ID ${id} does not support transitions.`);
+        }
         setIsModalOpen(false);
       };
 

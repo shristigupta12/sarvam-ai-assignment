@@ -10,7 +10,15 @@ export const PromptTransition = ({id, index, transition, data}:{id: string, inde
     const [isEditing, setIsEditing] = useState(false)
     const updateNodeData = useFlowStore((state) => state.updateNodeData)
     const handleEditPromptTransitionContent = (e: React.ChangeEvent<HTMLInputElement>) => {
-        updateNodeData(id, { transitions: data.transitions.map((t, i) => i === index ? { ...t, content: e.target.value } : t) })
+        if ('transitions' in data && Array.isArray(data.transitions)) {
+            updateNodeData(id, { 
+                transitions: data.transitions.map((t: TransitionType, i: number) => 
+                    i === index ? { ...t, content: e.target.value } : t
+                ) 
+            })
+        } else {
+            console.warn(`Node with ID ${id} does not support transitions or transitions are not an array.`)
+        }
     }
     const [isHovered, setIsHovered] = useState(false);
 

@@ -93,7 +93,7 @@ export const EquationModal = ({ initialConditionString, onSave, onClose }: { ini
     };
   
     return (
-      <div className="modal-overlay text-neutral-600 bg-white absolute -right-100 py-2 px-4 rounded-md border flex flex-col gap-2 w-[450px]">
+      <div className="modal-overlay text-neutral-600 bg-white absolute -right-114 py-2 px-4 rounded-md border flex flex-col gap-2 w-[450px]">
           <div className="modal-content pb-3">
             <div className="flex justify-between items-center">
             <h3 className="text-md font-semibold text-neutral-700">Configure conditions</h3>
