@@ -17,13 +17,13 @@ const NodeSidebar: React.FC = () => {
       animate={{ 
         opacity: 1, 
         x: 0,
-        width: isOpen ? "280px" : "64px"
+        width: isOpen ? "200px" : "64px"
       }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      <div className={`flex gap-2 justify-between items-center px-3 sm:px-5 `}>
-        <AnimatePresence>
+      <div className={`flex gap-2 justify-between items-center px-6 `}>
           {isOpen && (
+        <AnimatePresence>
             <motion.h1
               key="sidebar-title"
               initial={{ opacity: 0, x: -10 }}
@@ -34,8 +34,8 @@ const NodeSidebar: React.FC = () => {
             >
               sarvam
             </motion.h1>
-          )}
         </AnimatePresence>
+          )}
         <PanelRight 
           className="size-[15px] text-neutral-600 cursor-pointer flex-shrink-0" 
           onClick={() => setIsOpen(!isOpen)} 
