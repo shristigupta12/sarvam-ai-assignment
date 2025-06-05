@@ -42,7 +42,7 @@ const NodeSettingsPanel: React.FC = () => {
                   newTransitions[index] = { ...transition, type: e.target.value as "EQUATION" | "PROMPT" };
                   updateNodeData(nodeId, { transitions: newTransitions });
                 }}
-                className="w-full p-1 text-sm border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                className="w-full p-1 text-sm border border-gray-300 rounded "
               >
                 <option value="EQUATION">EQUATION</option>
                 <option value="PROMPT">PROMPT</option>
