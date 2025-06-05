@@ -40,12 +40,14 @@ export const NodesWrapper = ({ nodeId, nodeType, title, handleTitleChange, child
                     )}
                     <PencilLine className={`w-3 h-3 sm:w-4 sm:h-4 cursor-pointer flex-shrink-0 transition-opacity ${isHovered? "opacity-100" : "opacity-0"}`} onClick={() => setIsEditing(true)} />
                 </div>
+                {nodeType!="beginNode" &&
                 <div className="flex-shrink-0">
                     <EditNodeDropdown id={nodeId} className={`transition-opacity ${isHovered? "opacity-100" : "opacity-0"}`} />
                 </div>
+                }
             </div>
             {nodeType!="endCallNode" &&
-                <div className="border bg-white rounded-md p-1.5 sm:p-2">
+                <div className={` bg-white rounded-md  ${nodeType=="beginNode" ? "p-0 border-none" : "p-1.5 sm:p-2 border"}`}>
                     {children}
                 </div>
             }

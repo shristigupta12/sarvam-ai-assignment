@@ -37,6 +37,10 @@
     transitions: TransitionType[]
   }
 
+  export interface BeginNodeData {
+    title: string;
+  }
+
   export interface CustomEdgeData {
     condition?: string;
   }
@@ -46,7 +50,8 @@
     | FunctionNodeData
     | CallTransferNodeData
     | PressDigitNodeData
-    | EndCallNodeData;
+    | EndCallNodeData
+    | BeginNodeData;
 
   export interface CustomFlowNodes extends Node {
     data: CustomNodeData;

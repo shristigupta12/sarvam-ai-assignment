@@ -10,7 +10,8 @@ import {
   PressDigitNodeData,
   CustomNodeData,
   EndCallNodeData,
-  TransitionType
+  TransitionType,
+  BeginNodeData,
 } from '@/modules/types/flow';
 
 const NodeSettingsPanel: React.FC = () => {
@@ -109,7 +110,7 @@ const NodeSettingsPanel: React.FC = () => {
           className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 mb-3"
           placeholder="Enter node title"
         />
-        {showTransitions && renderTransitionsEditor(nodeData?.transitions || [], nodeId)}
+        {showTransitions && 'transitions' in nodeData && nodeData.transitions && renderTransitionsEditor(nodeData.transitions, nodeId)}
       </>
     );
 
@@ -201,6 +202,14 @@ const NodeSettingsPanel: React.FC = () => {
             <>
               {renderCommonFields(endCallData, node.id, false)}
               <p className="text-sm text-gray-600">This node marks the termination of the flow.</p>
+            </>
+          );
+        case 'beginNode':
+          const beginData = node.data as BeginNodeData;
+          return (
+            <>
+              {renderCommonFields(beginData, node.id, false)}
+              <p className="text-sm text-gray-600">This is the starting point of the flow.</p>
             </>
           );
         default:
