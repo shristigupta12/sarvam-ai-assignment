@@ -1,14 +1,19 @@
+"use client"
+
 import { cn } from "@/lib/utils"
-import { NodeBackgroundColors, NodeIcons, NodeTextColors } from "@/modules/constants/node-data";
+import { NodeBackgroundColors, NodeBorderColors, NodeIcons, NodeTextColors } from "@/modules/constants/node-data";
 import { NodeType } from "@/modules/interfaces/main";
 import { PencilLine } from "lucide-react";
 import { useState } from "react";
 import { EditNodeDropdown } from "./edit-node-dropdown";
+import useFlowStore from "@/modules/store/flow-store";
 
 export const NodesWrapper = ({ nodeId, nodeType, title, handleTitleChange, children, className}:{ nodeId: string, nodeType: NodeType, title: string, handleTitleChange: (title: string) => void, children: React.ReactNode, className?: string}) => {
     
     const [isEditing, setIsEditing] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
+    const {selectedElements} = useFlowStore();
+    const isSelected = selectedElements.nodes.some(node => node.id === nodeId);
     
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' || e.key === 'Escape') {
@@ -18,7 +23,12 @@ export const NodesWrapper = ({ nodeId, nodeType, title, handleTitleChange, child
     
     return(
         <div 
-            className={cn("border rounded-md p-1 shadow-md w-full min-w-[280px] max-w-[400px] sm:max-w-[450px] md:max-w-[500px] text-neutral-600", className, NodeBackgroundColors[nodeType] )}
+            className={cn(
+                "rounded-md p-1 shadow-md w-full min-w-[280px] max-w-[400px] sm:max-w-[450px] md:max-w-[500px] text-neutral-600 ", 
+                className, 
+                NodeBackgroundColors[nodeType],
+                isSelected ? NodeBorderColors[nodeType] + " border-[1px]" : "border-none"
+            )}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >

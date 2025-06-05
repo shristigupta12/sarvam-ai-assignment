@@ -20,6 +20,7 @@ import {
   CustomEdgeData,
   FunctionNodeData,
   CustomNodeData,
+  ConversationNodeData,
   BeginNodeData,
 } from '@/modules/types/flow';
 

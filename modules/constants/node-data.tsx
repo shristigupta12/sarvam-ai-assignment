@@ -10,6 +10,15 @@ export const NodeBackgroundColors: Record<NodeType, string> = {
     "beginNode": "bg-green-50"
 }
 
+export const NodeBorderColors: Record<NodeType, string> = {
+    "conversationNode": "border-indigo-300",
+    "functionNode": "border-rose-300",
+    "callTransferNode": "border-fuchsia-300",
+    "pressDigitNode": "border-emerald-300",
+    "endCallNode": "border-sky-300",
+    "beginNode": "border-green-300"
+}
+
 export const NodeTextColors: Record<NodeType, string> = {
     "conversationNode": "text-indigo-500",
     "functionNode": "text-rose-500",
