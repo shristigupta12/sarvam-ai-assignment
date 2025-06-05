@@ -5,6 +5,7 @@ import ReactFlow, { ReactFlowProvider, Background, Controls, useReactFlow, Node 
 import 'reactflow/dist/style.css';
 import useFlowStore from '@/modules/store/flow-store';
 import { CallTransferNode, ConversationNode, EndCallNode, FunctionNode, PressDigitNode } from './canvas/nodes';
+import BeginNode from './canvas/nodes/begin-node';
 import NodeSidebar from './node-sidebar/node-sidebar';
 import CustomEdge from './canvas/edges/custom-edge';
 import NodeSettingsPanel from './node-settings-panel/node-settings-panel';
@@ -20,6 +21,7 @@ const nodeTypes = {
     callTransferNode: CallTransferNode,
     pressDigitNode: PressDigitNode,
     endCallNode: EndCallNode,
+    beginNode: BeginNode,
 };
 
 const edgeTypes = {

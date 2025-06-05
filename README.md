@@ -1,4 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# React Flow Authoring
+
+A visual editor for creating interactive call flows.
+
+This project allows users to design and configure call flows by dragging and dropping different types of nodes onto a canvas, connecting them, and customizing their properties. It provides a user-friendly interface for building complex call logic visually.
+
+## Features
+
+*   **Visual Flow Canvas:** A drag-and-drop interface powered by ReactFlow for designing call flows.
+*   **Diverse Node Types:** Includes nodes for various call actions such as:
+    *   `Begin`: Starting point of the flow.
+    *   `Conversation`: For IVR prompts and user interactions.
+    *   `Function`: To integrate custom server-side logic (details selected via a modal).
+    *   `Call Transfer`: To transfer calls to a specified phone number.
+    *   `Press Digit`: To handle DTMF inputs from the user.
+    *   `End Call`: To terminate the call flow.
+*   **Node Configuration:** A settings panel allows users to customize the properties of each selected node (e.g., prompts, phone numbers, function names).
+*   **Custom Edges:** Connections between nodes can be customized (though currently default to 'No condition set').
+*   **Node Sidebar:** A dedicated panel to easily drag new nodes onto the canvas.
+*   **State Management:** Uses Zustand for managing the state of the flow (nodes, edges, UI states like modal visibility).
+
+## Technology Stack
+
+*   **Framework:** [Next.js](https://nextjs.org/) (with React)
+*   **Language:** [TypeScript](https://www.typescriptlang.org/)
+*   **Flow Canvas Library:** [ReactFlow](https://reactflow.dev/)
+*   **State Management:** [Zustand](https://github.com/pmndrs/zustand)
+*   **Styling:** (Primarily inline styles or global JSX, easily extendable with Tailwind CSS or CSS Modules)
+
+## Project Structure
+
+```
+.
+├── app/                  # Next.js App Router (pages, layout, API routes)
+│   ├── page.tsx          # Main entry point for the application UI
+│   └── favicon.ico       # Application favicon
+├── modules/              # Core application logic and components
+│   ├── canvas/           # Custom nodes and edges for ReactFlow
+│   ├── constants/        # Application-wide constants (e.g., node data)
+│   ├── hooks/            # Custom React hooks (e.g., useCreateNode)
+│   ├── interfaces/       # TypeScript interface definitions
+│   ├── node-settings-panel/ # UI for configuring selected nodes
+│   ├── node-sidebar/     # UI for dragging new nodes
+│   ├── providers/        # React context providers (e.g., SidebarProvider)
+│   ├── store/            # Zustand store for state management (flow-store.ts)
+│   ├── types/            # TypeScript type definitions for flow elements
+│   ├── utility/          # Helper functions
+│   ├── flow-canvas.tsx   # Main ReactFlow canvas wrapper and logic
+├── public/               # Static assets
+├── ...                   # Other standard Next.js files and configs (package.json, tsconfig.json, etc.)
+```
 
 ## Getting Started
 

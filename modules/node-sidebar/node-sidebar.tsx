@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Separator } from "@/components/ui/separator";
 import { SidebarComponent } from "./components/sidebar-component";
 import { SidebarComponentData } from "./constants/main";
@@ -17,28 +17,46 @@ const NodeSidebar: React.FC = () => {
       animate={{ 
         opacity: 1, 
         x: 0,
-        width: isOpen ? "min(280px, 20vw)" : "min(64px, 10vw)"
+        width: isOpen ? "280px" : "64px"
       }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      style={{
-        minWidth: isOpen ? "240px" : "48px",
-        maxWidth: isOpen ? "320px" : "80px"
-      }}
     >
       <div className={`flex gap-2 justify-between items-center px-3 sm:px-5 `}>
-        {isOpen && <h1 className="font-semibold text-lg sm:text-xl text-primary-300 truncate">sarvam</h1>}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.h1
+              key="sidebar-title"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -10 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="font-semibold text-lg sm:text-xl text-primary-300 truncate"
+            >
+              sarvam
+            </motion.h1>
+          )}
+        </AnimatePresence>
         <PanelRight 
           className="size-[15px] text-neutral-600 cursor-pointer flex-shrink-0" 
           onClick={() => setIsOpen(!isOpen)} 
         />
       </div>
       
-      {isOpen && (
-        <div className="flex flex-col px-3 sm:px-4">
-          <div className="text-sm sm:text-md font-semibold text-neutral-700">Add New Node</div>
-          <p className="text-xs text-neutral-400">Click or drag</p>
-        </div>
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            key="add-new-node-section"
+            className="flex flex-col px-3 sm:px-4 overflow-hidden"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+          >
+            <div className="text-sm sm:text-md font-semibold text-neutral-700">Add New Node</div>
+            <p className="text-xs text-neutral-400">Click or drag</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Separator />
 

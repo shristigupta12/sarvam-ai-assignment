@@ -1,4 +1,4 @@
-import { CustomNodeData } from "@/modules/types/flow"
+import { CustomNodeData, TransitionType } from "@/modules/types/flow"
 import { AddTransitionsDropdown } from "./add-transitions-dropdown"
 import { EquationTransition } from "./equation-transition"
 import { PromptTransition } from "./prompt-transition"
@@ -17,10 +17,11 @@ export const TransitionConditions = ({id, data}:{id:string, data:CustomNodeData}
                 <AddTransitionsDropdown id={id} data={data} />
             </div>
             <div className="flex flex-col gap-1.5 sm:gap-2">
-                {data && data?.transitions?.map((transition, index) => (
-                    transition.type === 'EQUATION' ? 
-                        <EquationTransition id={id} data={data} index={index} transition={transition} key={index} /> : 
-                        <PromptTransition id={id} data={data} index={index} transition={transition} key={index} />
+                {('transitions' in data && Array.isArray(data.transitions)) && 
+                    data.transitions.map((transition: TransitionType, index: number) => (
+                        transition.type === 'EQUATION' ? 
+                            <EquationTransition id={id} data={data} index={index} transition={transition} key={index} /> : 
+                            <PromptTransition id={id} data={data} index={index} transition={transition} key={index} />
                 ))}
             </div>
         </div>

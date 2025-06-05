@@ -10,7 +10,8 @@ import {
   PressDigitNodeData,
   CustomNodeData,
   EndCallNodeData,
-  TransitionType
+  TransitionType,
+  BeginNodeData,
 } from '@/modules/types/flow';
 
 const NodeSettingsPanel: React.FC = () => {
@@ -19,28 +20,13 @@ const NodeSettingsPanel: React.FC = () => {
     const selectedNode: Node<CustomNodeData> | undefined = selectedElements.nodes[0];
     const selectedEdge: Edge<CustomEdgeData> | undefined = selectedElements.edges[0];
 
-    // Auto-open settings panel when something is selected on mobile
     useEffect(() => {
       if ((selectedNode || selectedEdge) && window.innerWidth < 640) {
         openSettingsPanel();
       }
     }, [selectedNode, selectedEdge, openSettingsPanel]);
 
-    const renderToggle = (label: string, value: boolean, onChange: (checked: boolean) => void) => (
-      <div className="flex items-center justify-between mb-3">
-        <label htmlFor={`toggle-${label}`} className="text-sm font-medium text-gray-700">{label}:</label>
-        <label className="relative inline-flex items-center cursor-pointer">
-          <input
-            type="checkbox"
-            id={`toggle-${label}`}
-            className="sr-only peer"
-            checked={value}
-            onChange={(e) => onChange(e.target.checked)}
-          />
-          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-        </label>
-      </div>
-    );
+   
 
     const renderTransitionsEditor = (transitions: TransitionType[], nodeId: string) => (
       <div className="mb-4">
@@ -109,7 +95,7 @@ const NodeSettingsPanel: React.FC = () => {
           className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 mb-3"
           placeholder="Enter node title"
         />
-        {showTransitions && renderTransitionsEditor(nodeData?.transitions || [], nodeId)}
+        {showTransitions && 'transitions' in nodeData && nodeData.transitions && renderTransitionsEditor(nodeData.transitions, nodeId)}
       </>
     );
 
@@ -201,6 +187,14 @@ const NodeSettingsPanel: React.FC = () => {
             <>
               {renderCommonFields(endCallData, node.id, false)}
               <p className="text-sm text-gray-600">This node marks the termination of the flow.</p>
+            </>
+          );
+        case 'beginNode':
+          const beginData = node.data as BeginNodeData;
+          return (
+            <>
+              {renderCommonFields(beginData, node.id, false)}
+              <p className="text-sm text-gray-600">This is the starting point of the flow.</p>
             </>
           );
         default:

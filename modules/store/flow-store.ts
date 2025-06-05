@@ -20,6 +20,8 @@ import {
   CustomEdgeData,
   FunctionNodeData,
   CustomNodeData,
+  ConversationNodeData,
+  BeginNodeData,
 } from '@/modules/types/flow';
 
 interface SelectedElements {
@@ -55,7 +57,16 @@ interface FlowState {
 }
 
 const useFlowStore = create<FlowState>((set, get) => ({
-  nodes: [],
+  nodes: [
+    {
+      id: 'begin-node',
+      type: 'beginNode',
+      position: { x: 100, y: 100 },
+      data: {
+        title: 'Begin',
+      } as BeginNodeData,
+    },
+  ],
   edges: [],
   selectedElements: { nodes: [], edges: [] },
 
