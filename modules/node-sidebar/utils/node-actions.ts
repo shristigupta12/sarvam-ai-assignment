@@ -13,6 +13,10 @@ export const handleNodeClick = (
 };
 
 export const onDragStart = (event: React.DragEvent, nodeType: NodeType) => {
+  const preview = document.getElementById(`drag-preview-${nodeType}`);
+  if (preview) {
+    event.dataTransfer.setDragImage(preview, 0, 0);
+  }
   event.dataTransfer.setData("application/reactflow", nodeType);
   event.dataTransfer.effectAllowed = "move";
 }; 
