@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 import { Node as FlowNode } from 'reactflow';
-import useFlowStore from '@/modules/store/flow-store';
+import { useFlowEditor } from '@/modules/stores/use-flow-editor-store';
 import { generateUniqueNodeId } from '@/modules/utility/helper';
 import { NodeType } from '../interfaces/main';
 import { CallTransferNodeData, ConversationNodeData, CustomNodeData, EndCallNodeData, FunctionNodeData, PressDigitNodeData } from '../types/flow';
 
 export const useCreateNode = () => {
-  const { addNode } = useFlowStore();
+  const { addNode } = useFlowEditor();
 
   const createNode = useCallback((type: NodeType, position: { x: number; y: number } = { x: 50, y: 50 }) => {
     

@@ -1,12 +1,12 @@
 import { NodeType } from "@/modules/interfaces/main";
-import useFlowStore from "@/modules/store/flow-store";
+import { useUIStore } from "@/modules/stores/use-ui-store";
 
 export const handleNodeClick = (
   nodeType: NodeType,
   createNode: (type: NodeType, position: { x: number; y: number }) => void
 ) => {
   if (nodeType === 'functionNode') {
-    useFlowStore.getState().openFunctionModal( { x: 50, y: 50 });
+    useUIStore.getState().openFunctionModal( { x: 50, y: 50 });
   } else {
     createNode(nodeType, { x: 50, y: 50 });
   }

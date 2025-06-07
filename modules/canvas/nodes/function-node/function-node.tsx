@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Handle, Position, NodeProps } from 'reactflow';
 import { NodesWrapper } from '../nodes-wrapper/nodes-wrapper';
-import useFlowStore from '@/modules/store/flow-store';
+import { useFlowStore } from '@/modules/stores/use-flow-store';
 import { TransitionConditions } from '../transition-conditions/transition-conditions';
 import { FunctionNodeData } from '@/modules/types/flow';
 import { Input } from '@/components/ui/input';

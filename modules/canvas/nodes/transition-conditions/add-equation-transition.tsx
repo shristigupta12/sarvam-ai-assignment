@@ -1,4 +1,4 @@
-import useFlowStore from "@/modules/store/flow-store"
+import { useFlowStore } from "@/modules/stores/use-flow-store";
 import { CustomNodeData } from "@/modules/types/flow"
 import { useState, useEffect } from "react";
 import { EquationModal } from "./equationModal";

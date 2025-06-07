@@ -5,7 +5,7 @@ import { Position } from "reactflow"
 import { DeleteTransition } from "./delete-transition"
 import { EquationModal } from "./equationModal"
 import { useState } from "react"
-import useFlowStore from "@/modules/store/flow-store"
+import { useFlowStore } from "@/modules/stores/use-flow-store"
 
 export const EquationTransition = ({id, index, transition, data}:{id: string, index: number, transition: TransitionType, data: CustomNodeData}) => {
     const updateNodeData = useFlowStore((state) => state.updateNodeData)

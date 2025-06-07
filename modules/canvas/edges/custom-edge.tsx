@@ -6,7 +6,7 @@ import {
     EdgeProps,
     Edge as ReactFlowEdge
 } from 'reactflow';
-import useFlowStore from '@/modules/store/flow-store';
+import { useFlowStore } from '@/modules/stores/use-flow-store';
 import { CustomEdgeData } from '@/modules/types/flow';
 import { X } from 'lucide-react';
 

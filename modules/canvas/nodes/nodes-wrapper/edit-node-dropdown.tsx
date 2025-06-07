@@ -1,4 +1,4 @@
-import useFlowStore from "@/modules/store/flow-store";
+import { useFlowEditor } from "@/modules/stores/use-flow-editor-store";
 import { Ellipsis } from "lucide-react"
 import { useEffect, useRef, useState } from "react";
 
@@ -6,7 +6,7 @@ export const EditNodeDropdown = ({ id, className }: { id: string, className?: st
     
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
-    const { deleteNode, duplicateNode } = useFlowStore();
+    const { deleteNode, duplicateNode } = useFlowEditor();
 
     const handleDelete = () => {
         deleteNode(id);

@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { NodeProps, Handle, Position } from 'reactflow';
 import { NodesWrapper } from './nodes-wrapper/nodes-wrapper';
-import useFlowStore from '@/modules/store/flow-store';
+import { useFlowStore } from '@/modules/stores/use-flow-store';
 import { ConversationNodeData } from '@/modules/types/flow';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { TransitionConditions } from './transition-conditions/transition-conditions';

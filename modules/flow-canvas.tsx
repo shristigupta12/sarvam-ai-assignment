@@ -1,9 +1,13 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import ReactFlow, { ReactFlowProvider, Background, Controls, useReactFlow, Node as FlowNode, Edge, DefaultEdgeOptions, ConnectionLineType } from 'reactflow';
 import 'reactflow/dist/style.css';
-import useFlowStore from '@/modules/store/flow-store';
+
+import { useFlowStore } from '@/modules/stores/use-flow-store';
+import { useFlowEditor } from '@/modules/stores/use-flow-editor-store';
+import { useUIStore } from '@/modules/stores/use-ui-store';
+
 import { CallTransferNode, ConversationNode, EndCallNode, FunctionNode, PressDigitNode } from './canvas/nodes';
 import BeginNode from './canvas/nodes/begin-node';
 import NodeSidebar from './node-sidebar/node-sidebar';
@@ -35,19 +39,11 @@ const defaultEdgeOptions: DefaultEdgeOptions = {
 const FlowCanvas = () => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const { screenToFlowPosition } = useReactFlow();
-  const {
-    nodes,
-    edges,
-    onNodesChange,
-    onEdgesChange,
-    onConnect,
-    onEdgesDelete,
-    onSelectionChange,
-    isFunctionModalOpen, 
-    functionNodePendingPosition,
-    openFunctionModal, 
-    addFunctionNodeWithSelectedData,
-  } = useFlowStore();
+
+  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onEdgesDelete } = useFlowStore();
+  const { onSelectionChange, addFunctionNode } = useFlowEditor();
+  const { isFunctionModalOpen, functionNodePendingPosition, openFunctionModal, closeFunctionModal } = useUIStore();
+
   const { createNode } = useCreateNode(); 
 
   const onDragOver = useCallback((event: React.DragEvent) => {
@@ -84,7 +80,8 @@ const FlowCanvas = () => {
 
   const handleFunctionSelect = (functionName: string) => {
     if (functionNodePendingPosition) {
-      addFunctionNodeWithSelectedData(functionName, functionNodePendingPosition);
+      addFunctionNode(functionName, functionNodePendingPosition);
+      closeFunctionModal();
     }
   };
 
@@ -153,7 +150,7 @@ const FlowCanvas = () => {
         {isFunctionModalOpen && (
           <FunctionNodeModal
             isOpen={isFunctionModalOpen}
-            onClose={useFlowStore.getState().closeFunctionModal} 
+            onClose={closeFunctionModal} 
             onSelectFunction={handleFunctionSelect}
           />
         )}

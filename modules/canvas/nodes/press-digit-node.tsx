@@ -1,7 +1,7 @@
 // components/flow/nodes/PressDigitNode.tsx
 import React, { memo } from 'react';
 import { Handle, Position, NodeProps } from 'reactflow';
-import useFlowStore from '@/modules/store/flow-store';
+import { useFlowStore } from '@/modules/stores/use-flow-store';
 import { NodesWrapper } from './nodes-wrapper/nodes-wrapper';
 import { TransitionConditions } from './transition-conditions/transition-conditions';
 import { PressDigitNodeData } from '@/modules/types/flow';

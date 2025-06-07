@@ -1,4 +1,4 @@
-import useFlowStore from "@/modules/store/flow-store";
+import { useFlowStore } from "@/modules/stores/use-flow-store";
 import { Trash } from "lucide-react"
 import { CustomNodeData } from "@/modules/types/flow";
 

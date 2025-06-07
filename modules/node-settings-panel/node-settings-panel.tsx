@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
-import useFlowStore from '@/modules/store/flow-store';
+import { useFlowStore } from '@/modules/stores/use-flow-store';
+import { useFlowEditor } from '@/modules/stores/use-flow-editor-store';
+import { useUIStore } from '@/modules/stores/use-ui-store';
 import { Edge, Node } from 'reactflow';
 import { X, Settings } from 'lucide-react';
 import {
@@ -15,7 +17,9 @@ import {
 } from '@/modules/types/flow';
 
 const NodeSettingsPanel: React.FC = () => {
-    const { selectedElements, updateNodeData, updateEdgeData, isSettingsPanelOpen, toggleSettingsPanel, openSettingsPanel } = useFlowStore();
+    const { updateNodeData, updateEdgeData } = useFlowStore();
+    const { selectedElements } = useFlowEditor();
+    const { isSettingsPanelOpen, toggleSettingsPanel, openSettingsPanel } = useUIStore();
 
     const selectedNode: Node<CustomNodeData> | undefined = selectedElements.nodes[0];
     const selectedEdge: Edge<CustomEdgeData> | undefined = selectedElements.edges[0];

@@ -4,7 +4,7 @@ import { PencilLine, SunMedium   } from "lucide-react"
 import { Position } from "reactflow"
 import { DeleteTransition } from "./delete-transition"
 import { useState } from "react"
-import useFlowStore from "@/modules/store/flow-store"
+import { useFlowStore } from "@/modules/stores/use-flow-store"
 
 export const PromptTransition = ({id, index, transition, data}:{id: string, index: number, transition: TransitionType, data: CustomNodeData}) => {
     const [isEditing, setIsEditing] = useState(false)

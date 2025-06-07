@@ -6,13 +6,13 @@ import { NodeType } from "@/modules/interfaces/main";
 import { PencilLine } from "lucide-react";
 import { useState } from "react";
 import { EditNodeDropdown } from "./edit-node-dropdown";
-import useFlowStore from "@/modules/store/flow-store";
+import { useFlowEditor } from "@/modules/stores/use-flow-editor-store";
 
 export const NodesWrapper = ({ nodeId, nodeType, title, handleTitleChange, children, className}:{ nodeId: string, nodeType: NodeType, title: string, handleTitleChange: (title: string) => void, children: React.ReactNode, className?: string}) => {
     
     const [isEditing, setIsEditing] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
-    const {selectedElements} = useFlowStore();
+    const {selectedElements} = useFlowEditor();
     const isSelected = selectedElements.nodes.some(node => node.id === nodeId);
     
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
