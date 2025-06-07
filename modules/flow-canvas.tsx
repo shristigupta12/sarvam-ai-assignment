@@ -3,7 +3,7 @@
 import React, { useCallback, useRef } from 'react';
 import ReactFlow, { ReactFlowProvider, Background, Controls, useReactFlow, Node as FlowNode, Edge, DefaultEdgeOptions, ConnectionLineType } from 'reactflow';
 import 'reactflow/dist/style.css';
-
+import { Undo, Redo } from 'lucide-react';
 import { useFlowStore } from '@/modules/stores/use-flow-store';
 import { useFlowEditor } from '@/modules/stores/use-flow-editor-store';
 import { useUIStore } from '@/modules/stores/use-ui-store';
@@ -40,7 +40,7 @@ const FlowCanvas = () => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const { screenToFlowPosition } = useReactFlow();
 
-  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onEdgesDelete } = useFlowStore();
+  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onEdgesDelete, undo, redo, canUndo, canRedo, takeSnapshot } = useFlowStore();
   const { onSelectionChange, addFunctionNode } = useFlowEditor();
   const { isFunctionModalOpen, functionNodePendingPosition, openFunctionModal, closeFunctionModal } = useUIStore();
 
@@ -112,6 +112,10 @@ const FlowCanvas = () => {
       
       <div className="flex h-screen bg-neutral-50 relative">
         <NodeSidebar />
+        <div className="absolute sm:top-5 top-6 sm:left-60 right-32 w-fit z-10 bg-white p-2 rounded-md shadow-md flex gap-2 border border-neutral-300">
+          <button onClick={undo} disabled={!canUndo()} className='text-neutral-500 hover:text-primary-300 disabled:text-neutral-400 hover:cursor-pointer disabled:cursor-not-allowed'><Undo size={16} /></button>
+          <button onClick={redo} disabled={!canRedo()} className='text-neutral-500 hover:text-primary-300 disabled:text-neutral-400 hover:cursor-pointer disabled:cursor-not-allowed'><Redo size={16} /></button>
+        </div>
 
         <div className="flex-1 h-full min-w-0" ref={reactFlowWrapper}>
           <ReactFlow
@@ -122,6 +126,7 @@ const FlowCanvas = () => {
             onConnect={onConnect}
             onEdgesDelete={onEdgesDelete}
             onSelectionChange={onSelectionChange}
+            onNodeDragStop={() => takeSnapshot()}
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
             defaultEdgeOptions={defaultEdgeOptions}
@@ -142,7 +147,8 @@ const FlowCanvas = () => {
               showZoom={true}
               showFitView={true}
               showInteractive={false}
-            />
+            >
+            </Controls>
           </ReactFlow>
         </div>
         <NodeSettingsPanel />
