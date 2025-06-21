@@ -35,7 +35,7 @@ const NodeSidebar: React.FC = () => {
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 className="font-semibold text-lg sm:text-xl text-primary-300 truncate"
               >
-                sarvam
+                FlowBuilder
               </motion.h1>
           </AnimatePresence>
             )}
