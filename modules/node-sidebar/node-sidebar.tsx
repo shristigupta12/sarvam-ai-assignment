@@ -24,7 +24,7 @@ const NodeSidebar: React.FC = () => {
         }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        <div className={`flex gap-2 justify-between items-center px-6 `}>
+        <div className={`flex gap-2 justify-between items-center pr-6 pl-4 `}>
             {isOpen && (
           <AnimatePresence>
               <motion.h1
@@ -33,7 +33,7 @@ const NodeSidebar: React.FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -10 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className="font-semibold text-lg sm:text-xl text-primary-300 truncate"
+                className="font-semibold text-lg text-primary-300 truncate"
               >
                 FlowBuilder
               </motion.h1>
